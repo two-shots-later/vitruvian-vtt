@@ -1,3 +1,11 @@
+# Vitruvian VTT
+
+Vitruvian VTT is a VTT system that is meant to bring all of the advantages of online VTT's to the kitchen table. It is free, extendable, and open source. All modules are maintained by the community.
+
+# Contributing
+
+As the project is very early, it may be a little hard to contribute. If you want to help, you can find an issue, fork the repo, make the change, and then create a PR. Either one of the project owners will work with you on the PR.
+
 # Tauri + React + Typescript
 
 This template should help get you started developing with Tauri, React and Typescript in Vite.
