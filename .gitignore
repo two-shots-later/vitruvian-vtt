@@ -1,3 +1,9 @@
 /target
 
 /5etools
+
+/node_modules
+/.idea
+/scratch
+/.vscode
+/pf2e
