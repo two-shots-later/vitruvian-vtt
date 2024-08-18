@@ -4,7 +4,9 @@ Vitruvian VTT is a VTT system that is meant to bring all of the advantages of on
 
 # Contributing
 
-As the project is very early, it may be a little hard to contribute. If you want to help, you can find an issue, fork the repo, make the change, and then create a PR. Either one of the project owners will work with you on the PR.
+As the project is very early, it may be a little hard to contribute. If you want to help, you can find an issue, fork the repo, make the change, and then create a PR. More in dept details for contributing can be found in the `CONTRIBUTING.md` file.
+
+For the desgin philosophy of this project, check this page out : https://github.com/two-shots-later/vitruvian-vtt/wiki/Vitruvian-VTT-Philosophy
 
 # Tauri + React + Typescript
 
