@@ -12,3 +12,9 @@ pub fn run() {
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
+
+
+struct Test {
+    first_name : String,
+    last_name : String
+}
