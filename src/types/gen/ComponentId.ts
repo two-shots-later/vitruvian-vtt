@@ -3,4 +3,4 @@
 /**
  * Auto-generated discriminant enum variants
  */
-export type ComponentId = "Name" | "Bulk";
+export type ComponentId = "name" | "bulk";

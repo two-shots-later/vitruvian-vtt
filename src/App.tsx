@@ -1,7 +1,10 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/core";
+import type { Component } from "./types/gen/Component";
 import "./App.css";
+
+const nameComponent : Component = {name : "Test", bulk : 10}
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
