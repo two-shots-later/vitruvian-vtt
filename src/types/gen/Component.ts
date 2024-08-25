@@ -5,4 +5,4 @@ import type { Name } from "./Name";
 /**
  *A Component is a bit of data that can be stored onto an Entity. Objects in Vitruvian-VTT are represented by entities that have one or more of these components.
  */
-export type Component = { "Name": Name } | { "Bulk": Bulk };
+export type Component = { "name": Name } | { "bulk": Bulk };
