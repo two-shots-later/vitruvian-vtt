@@ -3,8 +3,11 @@ import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/core";
 import type { Component } from "./types/gen/Component";
 import "./App.css";
+import { Entity } from "./types/gen/Entity";
 
-const nameComponent : Component = {name : "Test", bulk : 10}
+const leather_armor : Entity = {
+  name: {name : "Leather Armor"}
+}
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");

@@ -10,4 +10,4 @@ description = "This crate is where vitruvian will define it's data."
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 strum = { version = "0.26.3", features = ["derive"] }
-ts-rs = "9.0.1"
+ts-rs = {git = "https://github.com/Aleph-Alpha/ts-rs.git"}

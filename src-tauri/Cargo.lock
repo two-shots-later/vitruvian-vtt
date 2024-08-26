@@ -3606,7 +3606,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b44017f9f875786e543595076374b9ef7d13465a518dd93d6ccdbf5b432dde8c"
 dependencies = [
  "thiserror",
- "ts-rs-macros",
+ "ts-rs-macros 9.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "ts-rs"
+version = "9.0.1"
+source = "git+https://github.com/Aleph-Alpha/ts-rs.git#78591a2831354243bb9eae5e254a8bcb85baffd9"
+dependencies = [
+ "lazy_static",
+ "thiserror",
+ "ts-rs-macros 9.0.1 (git+https://github.com/Aleph-Alpha/ts-rs.git)",
 ]
 
 [[package]]
@@ -3614,6 +3624,17 @@ name = "ts-rs-macros"
 version = "9.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c88cc88fd23b5a04528f3a8436024f20010a16ec18eb23c164b1242f65860130"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.74",
+ "termcolor",
+]
+
+[[package]]
+name = "ts-rs-macros"
+version = "9.0.1"
+source = "git+https://github.com/Aleph-Alpha/ts-rs.git#78591a2831354243bb9eae5e254a8bcb85baffd9"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -3766,7 +3787,7 @@ dependencies = [
  "serde",
  "serde_json",
  "strum",
- "ts-rs",
+ "ts-rs 9.0.1 (git+https://github.com/Aleph-Alpha/ts-rs.git)",
 ]
 
 [[package]]
@@ -3778,7 +3799,7 @@ dependencies = [
  "tauri",
  "tauri-build",
  "tauri-plugin-shell",
- "ts-rs",
+ "ts-rs 9.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "vitruvian-types",
 ]
 
