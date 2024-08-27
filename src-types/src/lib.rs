@@ -1,21 +1,19 @@
 use std::{fs::{read_to_string, OpenOptions}, io::Write, path::{Path, PathBuf}};
-use component::Translatable;
-use entity::PathfinderEntity;
-use prelude::Name;
+use std::any::Any;
+use std::collections::HashMap;
 use ts_rs::TS;
+use crate::prelude::Bulk;
 
 pub mod component;
 mod entity;
 
 pub mod prelude {
-    pub use crate::component::Component;
     pub use crate::component::core::*;
 }
 
 pub fn generate_types(mut path : PathBuf) -> Result<(), ts_rs::ExportError> {
-    let name = Name("test".to_string());
-    name.into_json();
-    PathfinderEntity::export_all_to(path.clone())?;
+    // Entity::export_all_to(path.clone())?;
+    Bulk::export_all_to(path.clone())?;
     
     //This is a fix for the generated TS file.
     //The problem is that since the key of th `components` HashMap is a `ComponentId` enum, the generated TS file will have the key that type.
@@ -30,3 +28,32 @@ pub fn generate_types(mut path : PathBuf) -> Result<(), ts_rs::ExportError> {
     
     Ok(())
 }
+
+//=========================================================================================================================
+//           Entity Struct
+//=========================================================================================================================
+
+/// An object that holds up to one of each Component type. This is how everything is represented in vitruvian.
+pub struct Entity {
+    compnents : HashMap<String, Box<dyn Any>>
+}
+
+impl Entity {
+    fn set<T : 'static>(&mut self, data : T) {
+        self.compnents.insert(std::any::type_name::<T>().to_string(), Box::new(data));
+    }
+
+    fn get<T : 'static>(&self) -> Option<&T>  {
+        let data = self.compnents.get(std::any::type_name::<T>());
+        match data {
+            None => {None}
+            Some(data) => {
+                Some(data.downcast_ref::<T>().expect("Unable to downcast"))
+            }
+        }
+    }
+}
+
+//=========================================================================================================================
+//           Entity Struct
+//=========================================================================================================================

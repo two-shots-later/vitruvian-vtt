@@ -1,3 +1,5 @@
+use vitruvian_types::prelude::Component;
+
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
 fn greet(name: &str) -> String {
@@ -11,6 +13,9 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![greet])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+
+    let bulk = vitruvian_types::prelude::Bulk(10);
+    println!("{}", bulk.to_json().as_str().unwrap())
 }
 
 
