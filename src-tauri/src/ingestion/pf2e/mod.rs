@@ -1,7 +1,11 @@
-use std::{env, path::{Path, PathBuf}};
+use std::{
+    env,
+    path::{Path, PathBuf},
+};
 
 use classes::Class;
 use git2::Repository;
+use spinoff::{spinners, Color, Spinner};
 
 use super::{Ingest, RolePlayingGame};
 
@@ -32,11 +36,14 @@ impl RolePlayingGame for Pf2eWorld {
             println!("Pf2e repository already installed locally");
         } else {
             println!("Cloning pf2e repository...");
+            println!("(This may take 5-10 minutes)");
+            let mut spinner = Spinner::new(spinners::Dots, "Loading...", Color::Blue);
             let repo_url = "https://github.com/foundryvtt/pf2e.git";
             match Repository::clone(repo_url, Self::path()) {
                 Ok(_) => (),
                 Err(e) => panic!("Failed to clone repository: {}", e),
             }
+            spinner.success("Done!");
         }
     }
 }
