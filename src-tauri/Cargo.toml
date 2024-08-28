@@ -19,4 +19,8 @@ tauri = { version = "2.0.0-rc", features = [] }
 tauri-plugin-shell = "2.0.0-rc"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+rusqlite = { version = "0.32.1", features = ["bundled"] }
+git2 = "0.19.0" # Bindings to libgit2 for interoperating with git repositories. This library is both threadsafe and memory safe and allows both reading and writing git repositories. 
+strum = { version = "0.26" }
+strum_macros = { version = "0.26" }
 
