@@ -1,4 +1,4 @@
-use std::{borrow::BorrowMut, cell::{Ref, RefCell, RefMut}, collections::{HashMap, HashSet}, ops::{Deref, DerefMut}};
+use std::{any::TypeId, borrow::BorrowMut, cell::{Ref, RefCell, RefMut}, collections::{HashMap, HashSet}, ops::{Deref, DerefMut}};
 use paste::paste;
 use serde_json::Value;
 
@@ -9,25 +9,35 @@ pub mod core;
 //=========================================================================================================================
 
 /// A compoenent is a piece of data that can be attached to an Entity.
-pub trait Component {
+pub trait Component : 'static {
+    
+    /// Converts the component to a JSON Value.
     fn json(&self) -> Value;
     
-    fn id(&self) -> &str {
-        std::any::type_name::<Self>()
+    /// Returns the TypeId of the type that is implemented by Component.
+    fn id(&self) -> TypeId {
+        std::any::TypeId::of::<Self>()
+    }
+    
+    /// Returns the name of the type that is implemented by Component.
+    fn type_name(&self) -> String {
+        std::any::type_name::<Self>().split("::").last().unwrap().to_string()
     }
 }
 
 impl dyn Component {
+    /// Casts a reference to a Component to a reference to a specific type. If the underlying type is not the same as the type being cast to, None is returned.
     pub fn cast<T : 'static>(&self) -> Option<&T> {
-        if self.id() == std::any::type_name::<T>() {
+        if self.id() == std::any::TypeId::of::<T>() {
             unsafe { Some(&*(self as *const dyn Component as *const T)) }
         } else {
             None
         }
     }
     
+    /// Casts a mutable reference to a Component to a mutable reference to a specific type. If the underlying type is not the same as the type being cast to, None is returned.
     pub fn cast_mut<T : 'static>(&mut self) -> Option<&mut T> {
-        if self.id() == std::any::type_name::<T>() {
+        if self.id() == std::any::TypeId::of::<T>() {
             unsafe { Some(&mut *(self as *mut dyn Component as *mut T)) }
         } else {
             None
@@ -39,9 +49,12 @@ impl dyn Component {
 //           Archetype Trait
 //=========================================================================================================================
 
+/// An Archetype describes a minimun set of components that an Entity must have. 
 pub trait Archetype {
-    fn types() -> HashSet<String>;
+    /// Returns a HashSet of TypeIds that represent the types that are required for the Archetype.
+    fn types() -> HashSet<TypeId>;
     
+    /// Returns true if the Archetype is a superset of the passed in Archetype.
     fn is_superset<A : Archetype>(&self, other : &A) -> bool {
         let types = A::types();
         let self_types = Self::types();
@@ -49,6 +62,7 @@ pub trait Archetype {
         types.is_subset(&self_types)
     }
     
+    /// Returns true if the Archetype is a subset of the passed in Archetype.
     fn is_subset<A : Archetype>(&self, other : &A) -> bool {
         let types = A::types();
         let self_types = Self::types();
@@ -57,29 +71,30 @@ pub trait Archetype {
     }   
 }
 
-/// A Macro to help implement different versions of the Archetype trait.
-macro_rules! impl_archetype {
-    ($($params:ident),*) => { 
-        impl <$($params : Component),*> Archetype for ($($params,)*) {
-            fn types() -> HashSet<String> {
-                HashSet::from([$(std::any::type_name::<$params>().to_string()),*])
-            }
-        }
-    };
-}
 
 impl Archetype for () {
-    fn types() -> HashSet<String> {
+    fn types() -> HashSet<TypeId> {
         HashSet::new()
     }
 }
 
 impl <C : Component + 'static> Archetype for C {
-    fn types() -> HashSet<String> {
+    fn types() -> HashSet<TypeId> {
         let mut set = HashSet::new();
-        set.insert(std::any::type_name::<Self>().to_string());
+        set.insert(std::any::TypeId::of::<Self>());
         set
     }
+}
+
+/// A Macro to help implement different versions of the Archetype trait.
+macro_rules! impl_archetype {
+    ($($params:ident),*) => { 
+        impl <$($params : Component),*> Archetype for ($($params,)*) {
+            fn types() -> HashSet<TypeId> {
+            HashSet::from([$(std::any::TypeId::of::<$params>()),*])
+            }
+        }
+    };
 }
 
 impl_archetype!(T1);
@@ -103,13 +118,14 @@ impl_archetype!(T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15
 //           Res Struct
 //=========================================================================================================================\
 
+/// A Res struct is a wrapper around a Ref that contains a reference to a Component. It is used to access the data of a Component.
 pub struct Res<'s, C : Component + 'static> {
     component : Ref<'s, Box<dyn Component>>,
     _phantom : std::marker::PhantomData<&'s C>
 }
 
 impl <'s, C : Component + 'static> Res<'s, C> {
-    
+    /// Creates a new Res struct from a Ref to a Component. It has the same lifetime as the Ref.
     pub fn new(component : Ref<'s, Box<dyn Component>>) -> Self {
         Self {
             component,
@@ -130,12 +146,14 @@ impl <C : Component> Deref for Res<'_, C> {
 //           ResMut Struct
 //=========================================================================================================================\
 
+/// A ResMut struct is a wrapper around a RefMut that contains a mutable reference to a Component. It is used to access and modify the data of a Component.
 pub struct ResMut<'s, C : Component + 'static> {
     component : RefMut<'s, Box<dyn Component>>,
     _phantom : std::marker::PhantomData<&'s C>
 }
 
 impl <'s, C : Component + 'static> ResMut<'s, C> {
+    /// Creates a new ResMut struct from a RefMut to a Component. It has the same lifetime as the RefMut.
     pub fn new(component : RefMut<'s, Box<dyn Component>>) -> Self {
         Self {
             component,
@@ -163,19 +181,19 @@ impl <C : Component> DerefMut for ResMut<'_, C> {
 //           ComponentGroup Trait
 //=========================================================================================================================
 
+/// The ComponentGroup trait is used to group multiple Components together. It can be used to get a disjoint mutable references to multiple Components.
 pub(crate) trait ComponentGroup {
     type Ref<'s>;
     type RefMut<'s>;
     
-    fn components(&self) -> Vec<&dyn Component>;
-    
-    fn components_mut(&mut self) -> Vec<&mut dyn Component>;
-    
+    /// Takes the ComponentGroup and returns a Vec of the Components.
     fn components_take(self) -> Vec<Box<dyn Component>>;
     
-    fn from_components_ref<'s>(components : &'s HashMap<String, RefCell<Box<dyn Component>>>) -> Option<Self::Ref<'s>>;
+    /// Returns a disjoint reference to the Components. 
+    fn components_ref<'s>(components : &'s HashMap<TypeId, RefCell<Box<dyn Component>>>) -> Option<Self::Ref<'s>>;
     
-    fn from_components_mut<'s>(components : &'s mut HashMap<String, RefCell<Box<dyn Component>>>) -> Option<Self::RefMut<'s>>;
+    /// Returns a disjoint mutable reference to the Components.
+    fn components_mut<'s>(components : &'s HashMap<TypeId, RefCell<Box<dyn Component>>>) -> Option<Self::RefMut<'s>>;
 }
 
 impl ComponentGroup for () {
@@ -183,23 +201,15 @@ impl ComponentGroup for () {
     type Ref<'s> = ();
     type RefMut<'s> = ();
     
-    fn components(&self) -> Vec<&dyn Component> {
-        vec![]
-    }
-    
-    fn components_mut(&mut self) -> Vec<&mut dyn Component> {
-        vec![]
-    }
-    
     fn components_take(self) -> Vec<Box<dyn Component>> {
         vec![]
     }
     
-    fn from_components_ref<'s>(_ : &'s HashMap<String, RefCell<Box<dyn Component>>>) -> Option<Self::Ref<'s>>{
+    fn components_ref<'s>(_ : &'s HashMap<TypeId, RefCell<Box<dyn Component>>>) -> Option<Self::Ref<'s>>{
         Some(())
     }
 
-    fn from_components_mut<'s>(_ : &'s mut HashMap<String, RefCell<Box<dyn Component>>>) -> Option<Self::RefMut<'s>> {
+    fn components_mut<'s>(_ : &'s HashMap<TypeId, RefCell<Box<dyn Component>>>) -> Option<Self::RefMut<'s>> {
         Some(())
     }
 
@@ -208,26 +218,19 @@ impl ComponentGroup for () {
 impl <C : Component + 'static> ComponentGroup for C {
     type Ref<'s> = Res<'s, C>;
     type RefMut<'s> = ResMut<'s, C>;
-    
-    fn components(&self) -> Vec<&dyn Component> {
-        vec![self]
-    }
-
-    fn components_mut(&mut self) -> Vec<&mut dyn Component> {
-        vec![self]
-    }
 
     fn components_take(self) -> Vec<Box<dyn Component>> {
         vec![Box::new(self)]
     }
     
-    fn from_components_ref<'s>(components : &'s HashMap<String, RefCell<Box<dyn Component>>>) -> Option<Self::Ref<'s>>{
-        let Some(component) = components.get(std::any::type_name::<C>()) else { return None };
+    fn components_ref<'s>(components : &'s HashMap<TypeId, RefCell<Box<dyn Component>>>) -> Option<Self::Ref<'s>>{
+        let Some(component) = components.get(&std::any::TypeId::of::<C>()) else { return None };
         Some(Res::new(component.borrow()))
     }
 
-    fn from_components_mut<'s>(components : &'s mut HashMap<String, RefCell<Box<dyn Component>>>) -> Option<Self::RefMut<'s>> {
-        todo!()
+    fn components_mut<'s>(components : &'s HashMap<TypeId, RefCell<Box<dyn Component>>>) -> Option<Self::RefMut<'s>> {
+        let Some(component) = components.get(&std::any::TypeId::of::<C>()) else { return None };
+        Some(ResMut::new(component.borrow_mut()))
     }
 }
 
@@ -239,28 +242,20 @@ macro_rules! impl_component_group {
             type Ref<'s> = ($(Res<'s, $params>),*);
             type RefMut<'s> = ($(ResMut<'s, $params>),*);
             
-            fn components(&self) -> Vec<&dyn Component> {
-                vec![$(&self.$location),*]
-            }
-            
-            fn components_mut(&mut self) -> Vec<&mut dyn Component> {
-                vec![$(&mut self.$location),*]
-            }
-            
             fn components_take(self) -> Vec<Box<dyn Component>> {
                 vec![$(Box::new(self.$location)),*]
             }
             
-            fn from_components_ref<'s>(components : &'s HashMap<String, RefCell<Box<dyn Component>>>) -> Option<Self::Ref<'s>> {
+            fn components_ref<'s>(components : &'s HashMap<TypeId, RefCell<Box<dyn Component>>>) -> Option<Self::Ref<'s>> {
                 $(
-                    let paste!{[<c$location>]} : Res<'s, $params> = Res::new(components.get(std::any::type_name::<$params>())?.borrow());
+                    let paste!{[<c$location>]} : Res<'s, $params> = Res::new(components.get(&std::any::TypeId::of::<$params>())?.borrow());
                 )*
                 Some(($(paste!{[<c$location>]}),*))
             }
             
-            fn from_components_mut<'s>(components : &'s mut HashMap<String, RefCell<Box<dyn Component>>>) -> Option<Self::RefMut<'s>> {
+            fn components_mut<'s>(components : &'s HashMap<TypeId, RefCell<Box<dyn Component>>>) -> Option<Self::RefMut<'s>> {
                 $(
-                    let paste!{[<c$location>]} : ResMut<'s, $params> = ResMut::new(components.get(std::any::type_name::<$params>())?.borrow_mut());
+                    let paste!{[<c$location>]} : ResMut<'s, $params> = ResMut::new(components.get(&std::any::TypeId::of::<$params>())?.borrow_mut());
                 )*
                 Some(($(paste!{[<c$location>]}),*))
             }
