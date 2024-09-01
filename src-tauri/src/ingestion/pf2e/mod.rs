@@ -9,8 +9,8 @@ use spinoff::{spinners, Color, Spinner};
 
 use super::{Ingest, RolePlayingGame};
 
-pub mod classes;
-pub mod core;
+mod classes;
+mod core;
 
 /// The P2FE world of data.
 ///
