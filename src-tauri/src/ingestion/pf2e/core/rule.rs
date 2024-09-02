@@ -19,10 +19,19 @@ pub enum RuleDefinition {
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub struct RuleGreaterLesser {
+    greater: Vec<String>,
+    lesser: Vec<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, PartialOrd, Ord)]
 #[serde(untagged)]
 pub enum RuleValue {
     String(String),
     U8(u8),
+    Bool(bool),
+    GreaterLesser(RuleGreaterLesser),
+    VecString(Vec<String>),
 }
 
 /// A rule pertaining to a Pathfinder 2nd Edition class.
@@ -35,4 +44,5 @@ pub struct Rule {
     slug: Option<String>,
     mode: Option<String>,
     path: Option<String>,
+    priority: Option<u8>,
 }
