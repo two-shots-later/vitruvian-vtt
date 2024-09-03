@@ -37,7 +37,7 @@ impl Entity {
     ///     ...
     /// }
     /// ```
-    fn get<'s, T : ComponentGroup + Archetype + 'static>(&'s self) -> Option<<T as ComponentGroup>::Ref<'s>>  {
+    fn get<'s, T : ComponentGroup + 'static>(&'s self) -> Option<<T as ComponentGroup>::Ref<'s>>  {
         T::components_ref(&self.compnents)
     }
     
@@ -94,32 +94,24 @@ impl ToString for Entity {
 }
 
 //=========================================================================================================================
-//           Entity Struct
+//           Entity Tests
 //=========================================================================================================================
 
 #[cfg(test)]
 mod tests {
     use serde::{Deserialize, Serialize};
-    use serde_json::{json, Value};
+    use serde_json::json;
     use ts_rs::TS;
-    use crate::{component::Component, entity::Entity};
+    use crate::{entity::Entity, prelude::{ComponentMarker, Component}};
 
-    //These components are jsut for structs.
+    //These components are just for structs.
     #[derive(TS, Serialize, Deserialize)]
     struct A(f64);
-    impl Component for A {
-        fn json(&self) -> Value {
-            serde_json::to_value(self).unwrap()
-        }
-    }
+    impl ComponentMarker for A {}
     
     #[derive(TS, Serialize, Deserialize)]
     struct B(i32);
-    impl Component for B {
-        fn json(&self) -> Value {
-            serde_json::to_value(self).unwrap()
-        }
-    }
+    impl ComponentMarker for B {}
     
     #[test]
     fn mutate_entity() {
@@ -134,6 +126,8 @@ mod tests {
             assert_eq!(a.0, 20.0);
             assert_eq!(b.0, 20);
         };
+        
+        
     }
     
     #[test]

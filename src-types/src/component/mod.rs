@@ -1,8 +1,13 @@
-use std::{any::TypeId, borrow::BorrowMut, cell::{Ref, RefCell, RefMut}, collections::{HashMap, HashSet}, ops::{Deref, DerefMut}};
+use std::{any::TypeId, cell::{Ref, RefCell, RefMut}, collections::{HashMap, HashSet}, ops::{Deref, DerefMut}};
 use paste::paste;
+use serde::Serialize;
 use serde_json::Value;
+use ts_rs::TS;
 
 pub mod core;
+
+/// This trait is used to mark a type that should auto implment the Component trait.
+pub trait ComponentMarker {}
 
 //=========================================================================================================================
 //           Component Trait
@@ -45,6 +50,12 @@ impl dyn Component {
     }
 }
 
+impl <T : Serialize + ComponentMarker + TS + 'static> Component for T {
+    fn json(&self) -> Value {
+        serde_json::to_value(self).unwrap()
+    }
+}
+
 //=========================================================================================================================
 //           Archetype Trait
 //=========================================================================================================================
@@ -70,7 +81,6 @@ pub trait Archetype {
         self_types.is_subset(&types)
     }   
 }
-
 
 impl Archetype for () {
     fn types() -> HashSet<TypeId> {
@@ -196,40 +206,21 @@ pub(crate) trait ComponentGroup {
     fn components_mut<'s>(components : &'s HashMap<TypeId, RefCell<Box<dyn Component>>>) -> Option<Self::RefMut<'s>>;
 }
 
-impl ComponentGroup for () {
-    
-    type Ref<'s> = ();
-    type RefMut<'s> = ();
-    
-    fn components_take(self) -> Vec<Box<dyn Component>> {
-        vec![]
-    }
-    
-    fn components_ref<'s>(_ : &'s HashMap<TypeId, RefCell<Box<dyn Component>>>) -> Option<Self::Ref<'s>>{
-        Some(())
-    }
-
-    fn components_mut<'s>(_ : &'s HashMap<TypeId, RefCell<Box<dyn Component>>>) -> Option<Self::RefMut<'s>> {
-        Some(())
-    }
-
-}
-
-impl <C : Component + 'static> ComponentGroup for C {
+impl <C : Component> ComponentGroup for C {
     type Ref<'s> = Res<'s, C>;
+
     type RefMut<'s> = ResMut<'s, C>;
 
     fn components_take(self) -> Vec<Box<dyn Component>> {
         vec![Box::new(self)]
     }
-    
-    fn components_ref<'s>(components : &'s HashMap<TypeId, RefCell<Box<dyn Component>>>) -> Option<Self::Ref<'s>>{
-        let Some(component) = components.get(&std::any::TypeId::of::<C>()) else { return None };
+
+    fn components_ref<'s>(components : &'s HashMap<TypeId, RefCell<Box<dyn Component>>>) -> Option<Self::Ref<'s>> {
+        let component = components.get(&std::any::TypeId::of::<C>())?;
         Some(Res::new(component.borrow()))
     }
-
     fn components_mut<'s>(components : &'s HashMap<TypeId, RefCell<Box<dyn Component>>>) -> Option<Self::RefMut<'s>> {
-        let Some(component) = components.get(&std::any::TypeId::of::<C>()) else { return None };
+        let component = components.get(&std::any::TypeId::of::<C>())?;
         Some(ResMut::new(component.borrow_mut()))
     }
 }
