@@ -192,7 +192,7 @@ impl <C : Component> DerefMut for ResMut<'_, C> {
 //=========================================================================================================================
 
 /// The ComponentGroup trait is used to group multiple Components together. It can be used to get a disjoint mutable references to multiple Components.
-pub(crate) trait ComponentGroup {
+pub trait ComponentGroup {
     type Ref<'s>;
     type RefMut<'s>;
     
