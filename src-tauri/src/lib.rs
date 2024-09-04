@@ -1,3 +1,5 @@
+use vitruvian_types::prelude::Component;
+
 pub mod ingestion;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
@@ -13,4 +15,10 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![greet])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+
+struct Test {
+    first_name : String,
+    last_name : String
 }

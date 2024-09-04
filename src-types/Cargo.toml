@@ -1,0 +1,20 @@
+[package]
+name = "vitruvian-types"
+version = "0.1.0"
+edition = "2021"
+description = "This crate is where vitruvian will define it's data."
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# This utility allows for some of the more complex marcro generation. 
+paste = "1.0.15"
+# Serde is for serialization and deserialization of data.
+serde = { version = "1", features = ["derive"] }
+# Serde JSON is a specific implementation of serde for JSON.
+serde_json = "1"
+# Strum is a library for working with enums.
+strum = { version = "0.26.3", features = ["derive"] }
+# Automatic returns ts types for rust types
+ts-rs = {git = "https://github.com/Aleph-Alpha/ts-rs.git"}
+# vitruvian-derive = { path = "../src-derive" }
