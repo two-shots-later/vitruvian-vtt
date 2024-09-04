@@ -1,14 +1,14 @@
-use std::{
-    env,
-    path::{Path, PathBuf},
-};
+use std::{env, path::PathBuf};
 
+use ancestry::Ancestry;
 use classes::Class;
 use git2::Repository;
+use serde::{Deserialize, Serialize};
 use spinoff::{spinners, Color, Spinner};
 
-use super::{Ingest, RolePlayingGame};
+use super::{Ingest, Named, RolePlayingGame};
 
+mod ancestry;
 mod classes;
 mod core;
 
@@ -20,14 +20,25 @@ mod core;
 /// use crate::vitruvian_vtt_lib::ingestion::pf2e::Pf2eWorld;
 /// use crate::vitruvian_vtt_lib::ingestion::Ingest;
 ///
-/// let world = Pf2eWorld::ingest();
+/// let world = Pf2eWorld::new();
 ///
 /// assert_eq!(world.classes.len(), 23);
+/// assert_eq!(world.ancestry.len(), 42);
 /// ```
 ///
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Pf2eWorld {
     pub classes: Vec<Class>,
+    pub ancestry: Vec<Ancestry>,
+}
+
+impl Pf2eWorld {
+    pub fn new() -> Self {
+        Self {
+            classes: Class::ingest_all(),
+            ancestry: Ancestry::ingest_all(),
+        }
+    }
 }
 
 impl RolePlayingGame for Pf2eWorld {
@@ -49,19 +60,16 @@ impl RolePlayingGame for Pf2eWorld {
 }
 
 impl Ingest for Pf2eWorld {
-    type Output = Pf2eWorld;
     type Parent = Pf2eWorld;
-
-    fn ingest() -> Self::Output {
-        Self::install();
-
-        Pf2eWorld {
-            classes: Vec::<Class>::ingest(),
-        }
-    }
 
     fn path() -> PathBuf {
         let current_directory = env::current_dir().expect("Could not get current directory");
         current_directory.join("data/pf2e")
+    }
+}
+
+impl Named for Pf2eWorld {
+    fn name() -> String {
+        String::from("Pathfinder 2nd Edition World")
     }
 }

@@ -1,18 +1,15 @@
-pub mod ancestry_feat_levels;
-pub mod attacks;
-pub mod class_feat_levels;
-pub mod defenses;
-pub mod general_feat_levels;
-pub mod hit_points;
-pub mod item;
-pub mod key_ability;
-pub mod perception;
-pub mod rule;
-pub mod saving_throws;
-pub mod skill_feat_levels;
-pub mod skill_increase_levels;
-pub mod spellcasting;
-pub mod trained_skills;
+mod ancestry_feat_levels;
+mod attacks;
+mod class_feat_levels;
+mod defenses;
+mod general_feat_levels;
+mod key_ability;
+mod perception;
+mod saving_throws;
+mod skill_feat_levels;
+mod skill_increase_levels;
+mod spellcasting;
+mod trained_skills;
 
 use std::{collections::HashMap, path::PathBuf};
 
@@ -21,9 +18,7 @@ use attacks::Attacks;
 use class_feat_levels::ClassFeatLevels;
 use defenses::Defenses;
 use general_feat_levels::GeneralFeatLevels;
-use item::Item;
 use key_ability::KeyAbility;
-use rule::Rule;
 use saving_throws::SavingThrows;
 use serde::{Deserialize, Serialize};
 use skill_feat_levels::SkillFeatLevels;
@@ -32,10 +27,12 @@ use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
 use trained_skills::TrainedSkills;
 
-use crate::ingestion::Ingest;
+use crate::ingestion::{Ingest, Named};
 
 use super::{
-    core::{description::Description, publication::Publication, traits::Traits},
+    core::{
+        description::Description, item::Item, publication::Publication, rule::Rule, traits::Traits,
+    },
     Pf2eWorld,
 };
 
@@ -84,25 +81,17 @@ pub struct System {
     pub traits: Traits,
 }
 
-impl Ingest for Vec<Class> {
-    type Output = Vec<Class>;
+impl Ingest for Class {
     type Parent = Pf2eWorld;
-
-    fn ingest() -> Self::Output {
-        println!("INGESTING CLASSES");
-        let ingest_class = |class: PathfinderClass| {
-            println!("{}", class.to_str());
-            let path = Self::path().join(format!("{}.json", class.to_str()));
-            let class = std::fs::read_to_string(path).unwrap();
-            let class: Class = serde_json::from_str(&class).unwrap();
-            class
-        };
-
-        PathfinderClass::iter().map(ingest_class).collect()
-    }
 
     fn path() -> std::path::PathBuf {
         PathBuf::from(Self::Parent::path()).join("packs/classes")
+    }
+}
+
+impl Named for Class {
+    fn name() -> String {
+        String::from("Classes")
     }
 }
 
