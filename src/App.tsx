@@ -1,13 +1,8 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/core";
-import type { Component } from "./types/gen/Component";
 import "./App.css";
 import { Entity } from "./types/gen/Entity";
-
-const leather_armor : Entity = {
-  name: {name : "Leather Armor"}
-}
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
@@ -15,7 +10,19 @@ function App() {
 
   async function greet() {
     // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-    setGreetMsg(await invoke("greet", { name }));
+    let data = await invoke("get_test_data");
+    console.log(data);
+    // setGreetMsg(await invoke("get_test_data"));
+  }
+  
+  /// The following code is to make an entity and send it to the backend
+  const entity : Entity = {
+    Name: "Test",
+    Damage : "D12"
+  }
+  
+  function send_value() {
+    invoke("set_test_data", {data : entity});
   }
 
   return (
@@ -43,12 +50,8 @@ function App() {
           greet();
         }}
       >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
+        <button type="submit">Get Entity</button>
+        <button onClick={send_value}>Send Entity</button>
       </form>
 
       <p>{greetMsg}</p>

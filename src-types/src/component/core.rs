@@ -2,9 +2,34 @@ use serde::{Deserialize, Serialize};
 use ts_rs::TS;
 
 use super::{ComponentMarker};
-#[derive(TS, Deserialize, Serialize)]
-pub struct Bulk(pub u32);
-impl ComponentMarker for Bulk {}
+
+//=========================================================================================================================
+//           Core Types
+//=========================================================================================================================
+
+#[derive(TS, Deserialize, Serialize, Clone, Copy)]
+pub enum Dice {
+    D4,
+    D6,
+    D8,
+    D10,
+    D12,
+    D20,
+    D100,
+}
+
+//=========================================================================================================================
+//           Core Components
+//=========================================================================================================================
+
+
+#[derive(TS, Deserialize, Serialize, Clone)]
+pub struct Name(pub String);
+impl ComponentMarker for Name {}
+
+#[derive(TS, Deserialize, Serialize, Clone)]
+pub struct Damage(pub Dice);
+impl ComponentMarker for Damage {}
 
 //=========================================================================================================================
 //           Core Components Tests
@@ -12,12 +37,4 @@ impl ComponentMarker for Bulk {}
 
 #[cfg(test)]
 mod tests {
-    use crate::{entity::Entity, prelude::Component};
-
-    use super::*;
-    
-    #[test]
-    fn mutate_entity() {
-        //Creating and new entity with the new() function and adding with add().
-    }
 }

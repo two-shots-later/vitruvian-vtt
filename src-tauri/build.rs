@@ -10,5 +10,5 @@ fn main() {
         panic!("Unable to find current Directory.")
     };
     working_directory.push(GENERATED_TYPES_EXPORT_LOCATION);
-    vitruvian_types::generate_types(working_directory).expect("Unable to generate types");
+    vitruvian_types::generate_types(&working_directory).expect("Unable to generate types");
 }

@@ -1,6 +1,6 @@
 use std::{any::TypeId, cell::{Ref, RefCell, RefMut}, collections::{HashMap, HashSet}, ops::{Deref, DerefMut}};
 use paste::paste;
-use serde::Serialize;
+use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use serde_json::Value;
 use ts_rs::TS;
 
@@ -17,7 +17,9 @@ pub trait ComponentMarker {}
 pub trait Component : 'static {
     
     /// Converts the component to a JSON Value.
-    fn json(&self) -> Value;
+    fn set_json(&self) -> Value;
+    
+    fn from_json(&mut self, json : Value);
     
     /// Returns the TypeId of the type that is implemented by Component.
     fn id(&self) -> TypeId {
@@ -50,9 +52,20 @@ impl dyn Component {
     }
 }
 
-impl <T : Serialize + ComponentMarker + TS + 'static> Component for T {
-    fn json(&self) -> Value {
+impl Serialize for dyn Component {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> where S: serde::Serializer {
+        self.set_json().serialize(serializer)
+    }
+}
+
+impl <T : Serialize + DeserializeOwned + ComponentMarker + TS + 'static> Component for T {
+    fn set_json(&self) -> Value {
         serde_json::to_value(self).unwrap()
+    }
+
+    fn from_json(&mut self, json : Value) {
+        let Ok(new_value) = serde_json::from_value::<Self>(json) else { panic!("Could not convert JSON to Component") };
+        *self = new_value;
     }
 }
 
@@ -62,6 +75,7 @@ impl <T : Serialize + ComponentMarker + TS + 'static> Component for T {
 
 /// An Archetype describes a minimun set of components that an Entity must have. 
 pub trait Archetype {
+    
     /// Returns a HashSet of TypeIds that represent the types that are required for the Archetype.
     fn types() -> HashSet<TypeId>;
     
@@ -101,7 +115,7 @@ macro_rules! impl_archetype {
     ($($params:ident),*) => { 
         impl <$($params : Component),*> Archetype for ($($params,)*) {
             fn types() -> HashSet<TypeId> {
-            HashSet::from([$(std::any::TypeId::of::<$params>()),*])
+                HashSet::from([$(std::any::TypeId::of::<$params>()),*])
             }
         }
     };
@@ -192,7 +206,7 @@ impl <C : Component> DerefMut for ResMut<'_, C> {
 //=========================================================================================================================
 
 /// The ComponentGroup trait is used to group multiple Components together. It can be used to get a disjoint mutable references to multiple Components.
-pub(crate) trait ComponentGroup {
+pub trait ComponentGroup {
     type Ref<'s>;
     type RefMut<'s>;
     
@@ -219,6 +233,7 @@ impl <C : Component> ComponentGroup for C {
         let component = components.get(&std::any::TypeId::of::<C>())?;
         Some(Res::new(component.borrow()))
     }
+    
     fn components_mut<'s>(components : &'s HashMap<TypeId, RefCell<Box<dyn Component>>>) -> Option<Self::RefMut<'s>> {
         let component = components.get(&std::any::TypeId::of::<C>())?;
         Some(ResMut::new(component.borrow_mut()))

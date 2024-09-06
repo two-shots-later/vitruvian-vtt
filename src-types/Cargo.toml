@@ -7,6 +7,7 @@ description = "This crate is where vitruvian will define it's data."
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+convert_case = "0.6.0"
 # This utility allows for some of the more complex marcro generation. 
 paste = "1.0.15"
 # Serde is for serialization and deserialization of data.
