@@ -17,6 +17,7 @@ fn get_test_data() -> Vec<Entity> {
     vec![entity]
 }
 
+// Test function for testing receiving data from the frontend. Sadly, there is not automatic deserialization of the data. This must be done manually.
 #[tauri::command]
 fn set_test_data(data : Value) {
     let mut entity : Entity = Entity::new();

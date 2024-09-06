@@ -15,6 +15,7 @@ function App() {
     // setGreetMsg(await invoke("get_test_data"));
   }
   
+  /// The following code is to make an entity and send it to the backend
   const entity : Entity = {
     Name: "Test",
     Damage : "D12"

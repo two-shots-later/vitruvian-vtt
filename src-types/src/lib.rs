@@ -1,7 +1,7 @@
 use std::{fmt::format, fs, path::PathBuf};
 
 use convert_case::{Case, Casing};
-use prelude::{Damage, Name};
+use prelude::{Component, Damage, Name};
 use ts_rs::TS;
 
 pub mod component;
