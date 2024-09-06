@@ -32,31 +32,16 @@ impl Entity {
     }
 
     /// Gets a reference to a component or group of components from the Entity. These are for reading only.
-    /// /// Example:
-    /// ```
-    /// if let Some((a, b)) = entity.get::<(A, B)>() {
-    ///     ...
-    /// }
-    /// ```
     pub fn get<'s, T : ComponentGroup + 'static>(&'s self) -> Option<<T as ComponentGroup>::Ref<'s>>  {
         T::components_ref(&self.components)
     }
     
     /// Gets a mutable reference to a component or group of components from the Entity. These are for reading and writing.
-    /// Example:
-    /// ```
-    /// if let Some((a, b)) = entity.get_mut::<(A, B)>() {
-    ///     ...
-    /// }
-    /// ```
     pub fn get_mut<'s, T : ComponentGroup + Archetype + 'static>(&'s mut self) -> Option<<T as ComponentGroup>::RefMut<'s>> {
         T::components_mut(&mut self.components)
     }
     
     ///Removes componets from the entity based of the passed in Archetype. Example:
-    /// ```
-    /// entity.remove::<(A, B)>(); // Removes components of type A and B
-    /// ```
     pub fn remove<T : Archetype + 'static>(&mut self) {
         for t in T::types() {
             self.archetype.remove(&t);
