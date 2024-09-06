@@ -7,7 +7,7 @@ use super::{ComponentMarker};
 //           Core Types
 //=========================================================================================================================
 
-#[derive(TS, Deserialize, Serialize)]
+#[derive(TS, Deserialize, Serialize, Clone, Copy)]
 pub enum Dice {
     D4,
     D6,
@@ -23,11 +23,11 @@ pub enum Dice {
 //=========================================================================================================================
 
 
-#[derive(TS, Deserialize, Serialize)]
+#[derive(TS, Deserialize, Serialize, Clone)]
 pub struct Name(pub String);
 impl ComponentMarker for Name {}
 
-#[derive(TS, Deserialize, Serialize)]
+#[derive(TS, Deserialize, Serialize, Clone)]
 pub struct Damage(pub Dice);
 impl ComponentMarker for Damage {}
 

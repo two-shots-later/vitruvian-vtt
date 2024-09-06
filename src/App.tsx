@@ -2,6 +2,7 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
+import { Entity } from "./types/gen/Entity";
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
@@ -12,6 +13,15 @@ function App() {
     let data = await invoke("get_test_data");
     console.log(data);
     // setGreetMsg(await invoke("get_test_data"));
+  }
+  
+  const entity : Entity = {
+    Name: "Test",
+    Damage : "D12"
+  }
+  
+  function send_value() {
+    invoke("set_test_data", {data : entity});
   }
 
   return (
@@ -40,6 +50,7 @@ function App() {
         }}
       >
         <button type="submit">Get Entity</button>
+        <button onClick={send_value}>Send Entity</button>
       </form>
 
       <p>{greetMsg}</p>
