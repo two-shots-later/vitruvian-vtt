@@ -1,7 +1,8 @@
 use serde::{Deserialize, Serialize};
 use ts_rs::TS;
 
-#[derive(Serialize, Deserialize, TS, Clone, Debug, PartialEq, Eq, Hash)]
+/// This defines a theme in the program.
+#[derive(Serialize, Deserialize, TS, Clone, Debug, PartialEq, Eq)]
 pub struct VitruvianTheme {
     pub primary: String,
     pub secondary: String,
