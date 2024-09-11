@@ -7,7 +7,7 @@ import ComponentLibrary from "./ComponentLibrary/ComponentLibrary";
 const routes = createBrowserRouter([
   {
     path: "/",
-    Component: Home
+    Component: Home,
   },
   {
     path: "/component-lib",

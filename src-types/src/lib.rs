@@ -2,15 +2,18 @@ use std::{fmt::format, fs, path::PathBuf};
 
 use convert_case::{Case, Casing};
 use prelude::{Component, Damage, Name};
+use theme::VitruvianTheme;
 use ts_rs::TS;
 
 pub mod component;
 pub mod entity;
+pub mod theme;
 
 pub mod prelude {
     pub use crate::component::core::*;
     pub use crate::entity::*;
     pub use crate::component::*;
+    pub use crate::theme::*;
 }
 
 /// This Marco is reponsible for generating type definition for a component.
@@ -36,6 +39,9 @@ pub fn generate_types(path : &PathBuf) -> Result<(), ts_rs::ExportError> {
         Name, 
         Damage
     );
+    
+    // Concrete types
+    VitruvianTheme::export_all_to(path.clone())?;
     
     // Generate the Component file
     let imports = types.iter().map(|t| format!("import {{ {t} }} from \"./{t}\";")).collect::<Vec<_>>().join("\n");
