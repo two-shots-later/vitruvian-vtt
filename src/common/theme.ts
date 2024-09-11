@@ -19,13 +19,14 @@ export async function getCurrentTheme() : Promise<VitruvianTheme> {
   return invoke<VitruvianTheme>("get_current_theme");
 }
 
-// export async function setDefaultTheme(theme : VitruvianTheme) {
-  
-// }
+export function setCurrentTheme(theme : VitruvianTheme) {
+  applyTheme(theme);
+  invoke("set_current_theme", { theme });
+}
 
-// export function getAvailableThemes() : string[] {
-  
-// }
+export async function getAvailableThemes() : Promise<string[]> {
+  return invoke<string[]>("get_available_themes");
+}
 
 export async function getTheme(themeId : string) : Promise<VitruvianTheme> {
   return invoke<VitruvianTheme>("get_theme", { themeId });

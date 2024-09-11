@@ -39,3 +39,15 @@ pub fn get_theme(theme_id : String) -> VitruvianTheme {
         get_current_theme()
     }
 }
+
+#[tauri::command]
+pub fn get_available_themes() -> Vec<String> {
+    vec!["green".to_string(), "red".to_string()]
+}
+
+#[tauri::command]
+pub fn set_current_theme(theme : VitruvianTheme) {
+    // This is a dummy functions for now, will be properly implemented in #30
+    
+    println!("Setting theme to: {:?}", theme);
+}

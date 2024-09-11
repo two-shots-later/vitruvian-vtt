@@ -39,7 +39,9 @@ pub fn run() {
             get_test_data, 
             set_test_data,
             themes::get_current_theme,
-            themes::get_theme
+            themes::get_theme,
+            themes::get_available_themes,
+            themes::set_current_theme,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
