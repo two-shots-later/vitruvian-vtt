@@ -1,7 +1,9 @@
+use commands::themes;
 use serde_json::Value;
 use vitruvian_types::prelude::*;
 
 pub mod ingestion;
+pub mod commands;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -32,7 +34,15 @@ fn set_test_data(data : Value) {
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
-        .invoke_handler(tauri::generate_handler![greet, get_test_data, set_test_data])
+        .invoke_handler(tauri::generate_handler![
+            greet, 
+            get_test_data, 
+            set_test_data,
+            themes::get_current_theme,
+            themes::get_theme,
+            themes::get_available_themes,
+            themes::set_current_theme,
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

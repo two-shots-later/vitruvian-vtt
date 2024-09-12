@@ -11,7 +11,7 @@
   "app": {
     "windows": [
       {
-        "title": "vitruvian_vtt",
+        "title": "Vitruvian VTT",
         "width": 800,
         "height": 600
       }
