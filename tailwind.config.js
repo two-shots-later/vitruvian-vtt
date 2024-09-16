@@ -33,9 +33,9 @@ export default {
         accent : "#4caf50"
       },
       'theme-primary' : 'var(--primary-color)',
-      secondary : 'var(--secondary-color)',
-      accent : 'var(--accent-color)',
-      background : 'var(--background-color)',
+      'theme-secondary' : 'var(--secondary-color)',
+      'theme-accent' : 'var(--accent-color)',
+      'theme-background' : 'var(--background-color)',
       'theme-text' : 'var(--text-color)',
       'alt-background' : 'var(--secondary-background-color)',
     },
