@@ -1,1 +1,1 @@
-export type IconId = "d12";
+export type IconId = "d20" | "d12" | "d10" | "d6" | "d8" | "d4";
