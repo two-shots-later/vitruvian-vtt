@@ -26,6 +26,7 @@ const Home = () => {
         <Badge variant="search" size={100}/>
         <Badge variant="pen" size={100}/>
         <Badge variant="gear" size={100}/>
+        <Badge variant="ellipsis" size={100}/>
       </div>
     </div>
   )
