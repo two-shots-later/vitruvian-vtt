@@ -13,7 +13,7 @@ export type TableProps = {
   icon? : IconId,
 }
 
-export const EntityContext = React.createContext<Entity[]>([])
+export const EntityContext = React.createContext<Entity[] | undefined>(undefined)
 
 export function Table({ icon, entities, children, tableName = "Table" } : TableProps) {
   return (
@@ -23,7 +23,7 @@ export function Table({ icon, entities, children, tableName = "Table" } : TableP
           {icon ? <Badge size={24} variant={icon} className="text-theme-text" /> : null}
           <p className="text-theme-text text-2xl align-text-bottom">{tableName}</p>
         </div>
-        <Icon variant="ellipsis" size={24} className="fill-theme-text"/>
+        <Icon variant="ellipsis" size={24} className="fill-theme-font-primary"/>
       </div>
       <EntityContext.Provider value={entities as Entity[]}>
         {children}

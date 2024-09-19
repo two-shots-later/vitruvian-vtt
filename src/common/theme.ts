@@ -10,9 +10,10 @@ export function applyTheme(theme: VitruvianTheme) {
   document.documentElement.style.setProperty("--accent-color", theme.accent);
   document.documentElement.style.setProperty("--background-color", theme.background);
   document.documentElement.style.setProperty("--background-alt-color", theme.background_alt);
-  document.documentElement.style.setProperty("--font-color", theme.font_color);
+  document.documentElement.style.setProperty("--font-primary", theme.font_primary);
+  document.documentElement.style.setProperty("--font-secondary", theme.font_secondary);
   document.documentElement.style.setProperty("background-color", theme.background);
-  document.documentElement.style.setProperty("color", theme.font_color);
+  document.documentElement.style.setProperty("color", theme.font_primary);
 }
 
 export async function getCurrentTheme() : Promise<VitruvianTheme> {
