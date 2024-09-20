@@ -21,7 +21,7 @@ export function Table({ icon, entities, children, tableName = "Table" } : TableP
       <div className="flex justify-between border-b border-theme-text py-1 items-end px-1">
         <div className="flex gap-2">
           {icon ? <Badge size={24} variant={icon} className="text-theme-text" /> : null}
-          <p className="text-theme-text text-2xl align-text-bottom">{tableName}</p>
+          <p className="text-theme-text text-2xl align-text-bottom truncate">{tableName}</p>
         </div>
         <Icon variant="ellipsis" size={24} className="fill-theme-font-primary"/>
       </div>
