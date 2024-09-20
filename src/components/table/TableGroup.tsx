@@ -1,18 +1,18 @@
 import { ReactElement, useContext } from "react";
-import { Archetype, ConcreteEntity, filterEntities } from "../../common/entity";
+import { Archetype, ArchetypeValue, ConcreteEntity, filterEntities } from "../../common/entity";
 import { IconId } from "../../types/Icon";
 import { EntityContext } from "./Table";
 import Badge from "../Badge";
 
 export type TableGroupLabels<A extends Archetype> = {
-  [k in A[number] as string] : string
+  [k in A[number] as string]? : string
 }
 
 export type TableGroupRenderFunctions<A extends Archetype> = {
-  [k in A[number] as string] : TableGroupRenderFunction<A>
+  [K in A[number]]? : TableGroupRenderFunction<A, K, ConcreteEntity<A>[K]>
 }
 
-type TableGroupRenderFunction<A extends Archetype> = <V extends ConcreteEntity<A>[A[number]]>(component : V) => ReactElement
+export type TableGroupRenderFunction<A extends Archetype, N extends ArchetypeValue, V extends ConcreteEntity<A>[N]> = (component : V) => ReactElement
 
 export type TableGroupProps<A extends Archetype, D extends Archetype = []> = {
   archetype : A,
@@ -45,10 +45,10 @@ export default function TableGroup<A extends Archetype, D extends Archetype = []
     return archetype.map((componentID, componentIndex) => {
       const id = componentID as keyof ConcreteEntity<A>;
       const key = `${id}-${entityIndex}-${componentIndex}`
+      const defaultRenderFunction : TableGroupRenderFunction<A, any, typeof component> = (component : any) => <div>{component}</div>
+      const component = entity[id]
       const renderFunction = 
-        renderFunctions ? renderFunctions[id] as TableGroupRenderFunction<A> : 
-        ((component : any) => <div>{component}</div>) as TableGroupRenderFunction<A>
-      const component = entity[componentID as keyof ConcreteEntity<A>]
+        renderFunctions ? renderFunctions[id] ? renderFunctions[id] as TableGroupRenderFunction<A, any, typeof component> : defaultRenderFunction : defaultRenderFunction
       const componentHtml = renderFunction(component)
       const style = {
         gridRowStart : entityIndex + 2,

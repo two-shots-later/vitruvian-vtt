@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom"
 import { Table } from "../../components/table/Table"
-import TableGroup from "../../components/table/TableGroup"
+import TableGroup, { TableGroupRenderFunction } from "../../components/table/TableGroup"
 import { Entity } from "../../types/gen/Entity"
+import { Archetype, ConcreteEntity } from "../../common/entity"
+import { Dice } from "../../types/gen/Dice"
+import { Damage } from "../../types/gen/Damage"
 
 const exampleEntities : Entity[] = [
   {
@@ -34,8 +37,13 @@ const Home = () => {
           label="Named Entities" 
           headerLabels={{Name : "Specific Name"}}
         />
-        <TableGroup label="Damage Entities" icon="d20" archetype={["Damage"]}/>
-        <TableGroup label="Both" icon="warning" archetype={["Name", "Damage"]}/>
+        <TableGroup label="Damage Entities" icon="d20" archetype={["Damage"]} />
+        <TableGroup label="Both" icon="warning" archetype={["Name", "Damage"]} 
+          renderFunctions={{
+            Name : (name : string) => <span className="text-theme-accent">{name}</span>,
+            Damage : (damage : Damage) => <span className="text-red-200">{damage}</span>
+          }} 
+          />
       </Table>
     </div>
   )
