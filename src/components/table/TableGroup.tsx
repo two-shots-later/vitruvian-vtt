@@ -52,7 +52,7 @@ export default function TableGroup<A extends Archetype, D extends Archetype = []
       const componentHtml = renderFunction(component)
       const style = {
         gridRowStart : entityIndex + 2,
-        gridColumnStart : componentIndex
+        gridColumnStart : componentIndex + 1
       }
       return <div key={key} style={style} className="w-full h-full">{componentHtml}</div>
     })
