@@ -9,13 +9,16 @@ const exampleEntities : Entity[] = [
     Damage: "D12"
   },
   {
+    Name: "Dilf Laungrin",
+    Damage: "D100"
+  },
+  {
     Name: "Jane Doe",
   },
   {
     Damage: "D6"
   }
 ]
-
 
 const Home = () => {
   return (
@@ -27,9 +30,9 @@ const Home = () => {
         <TableGroup 
           archetype={["Name"]} 
           disallow={["Damage"]} 
-          icon="search" 
+          icon="gear" 
           label="Named Entities" 
-          headerLabels={{Name : "Header Name"}}
+          headerLabels={{Name : "Specific Name"}}
         />
         <TableGroup label="Damage Entities" icon="d20" archetype={["Damage"]}/>
         <TableGroup label="Both" icon="warning" archetype={["Name", "Damage"]}/>

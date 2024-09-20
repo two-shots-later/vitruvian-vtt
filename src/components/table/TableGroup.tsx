@@ -8,13 +8,15 @@ export type TableGroupLabels<A extends Archetype> = {
   [k in A[number] as string] : string
 }
 
-export type TableGroupRenderFunction<A extends Archetype> = {
-  [k in A[number] as string] : <V extends ConcreteEntity<A>[A[number]]>(component : V) => ReactElement
+export type TableGroupRenderFunctions<A extends Archetype> = {
+  [k in A[number] as string] : TableGroupRenderFunction<A>
 }
+
+type TableGroupRenderFunction<A extends Archetype> = <V extends ConcreteEntity<A>[A[number]]>(component : V) => ReactElement
 
 export type TableGroupProps<A extends Archetype, D extends Archetype = []> = {
   archetype : A,
-  renderFunctions? : TableGroupRenderFunction<A>,
+  renderFunctions? : TableGroupRenderFunctions<A>,
   data? : ConcreteEntity<A>[],
   headerLabels? : TableGroupLabels<A>,
   disallow? : D,
@@ -39,20 +41,31 @@ export default function TableGroup<A extends Archetype, D extends Archetype = []
     data ? data : []
   ;
   
-  const entityHtml = entities.map((entity, index) => {
-    return archetype.map((componentID, index) => {
-      let id = componentID as keyof ConcreteEntity<A>;
-      let renderFunction = 
-        renderFunctions ? renderFunctions[id] : 
-        ((component : any) => <div>{component}</div>) as TableGroupRenderFunction<A>[A[number]]
-      let component = renderFunction(entity[componentID as keyof ConcreteEntity<A>])
+  const entityHtml = entities.map((entity, entityIndex) => {
+    return archetype.map((componentID, componentIndex) => {
+      const id = componentID as keyof ConcreteEntity<A>;
+      const key = `${id}-${entityIndex}-${componentIndex}`
+      const renderFunction = 
+        renderFunctions ? renderFunctions[id] as TableGroupRenderFunction<A> : 
+        ((component : any) => <div>{component}</div>) as TableGroupRenderFunction<A>
+      const component = entity[componentID as keyof ConcreteEntity<A>]
+      const componentHtml = renderFunction(component)
+      const style = {
+        gridRowStart : entityIndex + 2,
+        gridColumnStart : componentIndex
+      }
+      return <div key={key} style={style} className="w-full h-full">{componentHtml}</div>
     })
   }).flat()
   
   const labelHtml = archetype.map((a, index) => {
-    let l = a as string;
-    let display = headerLabels ? headerLabels[a] || l : l;
-    return <div key={l} className="text-theme-font-secondary border-b border-theme-font-secondary truncate" style={{gridRow : index}}>{display}</div>
+    const l = a as string;
+    const display = headerLabels ? headerLabels[a] || l : l;
+    const style = {
+      gridColumnStart : index + 1,
+      gridRowStart : 1
+    }
+    return <div key={l} className="text-theme-font-secondary border-b border-theme-font-secondary truncate" style={style}>{display}</div>
   })
   
   const gridStyle = {
@@ -68,7 +81,7 @@ export default function TableGroup<A extends Archetype, D extends Archetype = []
       </div>
       <div className="w-full border border-dashed rounded-lg grid p-1" style={gridStyle}>
         {labelHtml}
-        {JSON.stringify(filterEntities)}
+        {entityHtml}
       </div>
     </div>
   )
