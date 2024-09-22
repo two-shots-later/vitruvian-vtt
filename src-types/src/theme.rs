@@ -9,6 +9,7 @@ pub struct VitruvianTheme {
     pub accent: String,
     pub background: String,
     pub background_alt: String,
-    pub font_primary: String,
-    pub font_secondary: String,
+    pub font_color_primary: String,
+    pub font_color_secondary: String,
+    pub font_primary : String
 }

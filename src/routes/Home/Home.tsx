@@ -42,7 +42,7 @@ const Home = () => {
           renderFunctions={{
             Name : (name : string) => <span className="text-theme-accent">{name}</span>,
             Damage : (damage : Damage) => <span className="text-red-200">{damage}</span>
-          }} 
+          }}
           />
       </Table>
     </div>

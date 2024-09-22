@@ -5,6 +5,9 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    fontFamily: {
+      'crimson' : ['CrimsonPro', 'serif'],
+    },
     extend: {
       colors: {
         red : {
@@ -37,8 +40,8 @@ export default {
         'theme-secondary' : 'var(--secondary-color)',
         'theme-accent' : 'var(--accent-color)',
         'theme-background' : 'var(--background-color)',
-        'theme-font-primary' : 'var(--font-primary)',
-        'theme-font-secondary' : 'var(--font-secondary)',
+        'theme-font-primary' : 'var(--font-color-primary)',
+        'theme-font-secondary' : 'var(--font-color-secondary)',
         'alt-background' : 'var(--secondary-background-color)',
       },
     },

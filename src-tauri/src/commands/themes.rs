@@ -10,8 +10,9 @@ pub fn get_current_theme() -> VitruvianTheme {
         accent: "#59dfaa".to_string(),
         background: "#292929".to_string(),
         background_alt: "#2e2e2e".to_string(),
-        font_primary: "#ffffff".to_string(),
-        font_secondary: "#909090".to_string(),
+        font_color_primary: "#ffffff".to_string(),
+        font_color_secondary: "#909090".to_string(),
+        font_primary : "CrimsonPro".to_string()
     }
 }
 
@@ -27,8 +28,9 @@ pub fn get_theme(theme_id : String) -> VitruvianTheme {
             accent: "#59dfaa".to_string(),
             background: "#292929".to_string(),
             background_alt: "#2e2e2e".to_string(),
-            font_primary: "#ffffff".to_string(),
-            font_secondary: "#909090".to_string(),
+            font_color_primary: "#ffffff".to_string(),
+            font_color_secondary: "#909090".to_string(),
+            font_primary : "CrimsonPro".to_string()
         }
     } else if &theme_id == "red" {
         VitruvianTheme {
@@ -37,8 +39,9 @@ pub fn get_theme(theme_id : String) -> VitruvianTheme {
             accent: "#59dfaa".to_string(),
             background: "#292929".to_string(),
             background_alt: "#2e2e2e".to_string(),
-            font_primary: "#ffffff".to_string(),
-            font_secondary: "#909090".to_string(),
+            font_color_primary: "#ffffff".to_string(),
+            font_color_secondary: "#909090".to_string(),
+            font_primary : "CrimsonPro".to_string()
         }
     } else {
         get_current_theme()
