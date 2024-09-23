@@ -1,5 +1,5 @@
 import { ReactElement, Suspense, useState } from "react";
-import { applyTheme, getAvailableThemes, getTheme, setCurrentTheme} from "../../common/theme";
+import { getAvailableThemes, getTheme, setCurrentTheme} from "../../common/theme";
 
 const ComponentLibrary = () => {  
   
