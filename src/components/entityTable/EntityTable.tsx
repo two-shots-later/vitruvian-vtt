@@ -1,7 +1,7 @@
 import { ReactElement, useContext } from "react";
 import { Archetype, ArchetypeValue, ConcreteEntity, filterEntities } from "../../common/entity";
 import { IconId } from "../../types/Icon";
-import { EntityContext } from "./Table";
+import { EntityContext } from "./EntityTableGroup";
 import Badge from "../Badge";
 import { twMerge } from "tailwind-merge";
 
@@ -15,18 +15,37 @@ export type TableGroupRenderFunctions<A extends Archetype> = {
 
 export type TableGroupRenderFunction<A extends Archetype, N extends ArchetypeValue, V extends ConcreteEntity<A>[N]> = (component : V) => ReactElement
 
-export type TableGroupProps<A extends Archetype, D extends Archetype = []> = {
+/** 
+ * @component
+ * @description An entity that is used to display entities with a specific archetype. 
+ */
+export type EntityTableProps<A extends Archetype, D extends Archetype = []> = {
+  /** @description This table's archetype. This is used to for type checking and column display. */
   archetype : A,
+  /** @description These are custom render functions for each component type. */
   renderFunctions? : TableGroupRenderFunctions<A>,
+  /** @description These are the entities that are going to be displayed on the table.*/
   data? : ConcreteEntity<A>[],
+  /** @description An object of labels that will override the default labels of each component*/
   headerLabels? : TableGroupLabels<A>,
+  /** @description An archetype the defines entities that will be filtered out of the table*/
   disallow? : D,
+  /** @description The id of the icon that is displayed in the top right corner. If this is undefined, the icon will not be there.*/
   icon? : IconId
+  /** @description The name of the table. If empty, the table will have no label.*/
   label? : string
+  /** @description Class styles to style the table.*/
   className? : string
 }
 
-export default function TableGroup<A extends Archetype, D extends Archetype = []>({
+/**
+ * @description This component is used to display entities in a table format. It can be used in conjunction with the EntityTableGroup component or by itself.
+ * @example
+ * ```tsx
+ * <EntityTable archetype={["name", "age"]} data={[{name : "John", age : 20}, {name : "Jane", age : 30}]} />`
+ * ```
+*/
+export default function EntityTable<A extends Archetype, D extends Archetype = []>({
   archetype, 
   disallow, 
   icon, 
@@ -35,7 +54,7 @@ export default function TableGroup<A extends Archetype, D extends Archetype = []
   renderFunctions,
   data,
   className,
-} : TableGroupProps<A, D>) {
+} : EntityTableProps<A, D>) {
   const e = useContext(EntityContext)
   /// This line is a bit confusing. The tableGroup will use the entity context if available and filter from that.
   /// Otherwise, it will use the data prop if available. if both aren't there, it will default to an empty array.

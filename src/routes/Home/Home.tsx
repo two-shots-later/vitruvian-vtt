@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom"
-import { Table } from "../../components/table/Table"
-import TableGroup, { TableGroupRenderFunction } from "../../components/table/TableGroup"
+import EntityTableGroup from "../../components/entityTable/EntityTableGroup"
+import EntityTable from "../../components/entityTable/EntityTable"
 import { Entity } from "../../types/gen/Entity"
-import { Archetype, ConcreteEntity, filterEntities } from "../../common/entity"
-import { Dice } from "../../types/gen/Dice"
+import { filterEntities } from "../../common/entity"
 import { Damage } from "../../types/gen/Damage"
 
 const exampleEntities : Entity[] = [
@@ -54,22 +53,22 @@ const Home = () => {
       <h1>Home</h1>
       <p>Home page content</p>
       <Link to='/component-lib'>Go to Component Lib</Link>
-      <Table entities={exampleEntities} tableName="Test Table" className="h-[400px]">
-        <TableGroup 
+      <EntityTableGroup entities={exampleEntities} tableName="Test Table" className="h-[400px]">
+        <EntityTable
           archetype={["Name"]}
           icon="gear" 
           label="Named Entities" 
           headerLabels={{Name : "Specific Name"}}
         />
-        <TableGroup label="Damage Entities" icon="d20" archetype={["Damage"]} />
-        <TableGroup label="Both" icon="warning" archetype={["Name", "Damage"]} 
+        <EntityTable label="Damage Entities" icon="d20" archetype={["Damage"]} />
+        <EntityTable label="Both" icon="warning" archetype={["Name", "Damage"]} 
           renderFunctions={{
             Name : (name : string) => <span className="text-theme-accent">{name}</span>,
             Damage : (damage : Damage) => <span className="text-red-200">{damage}</span>
           }}
         />
-      </Table>
-      <TableGroup icon="filter" label="Sorted" data={filtered} archetype={["Name", "Damage"]} className="h-[200px]"/>
+      </EntityTableGroup>
+      <EntityTable icon="filter" label="Sorted" data={filtered} archetype={["Name", "Damage"]} className="h-[200px]"/>
     </div>
   )
 }
