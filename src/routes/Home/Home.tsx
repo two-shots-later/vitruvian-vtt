@@ -1,32 +1,90 @@
 import { Link } from "react-router-dom"
-import Icon from "../../components/Icon"
-import Badge from "../../components/Badge"
+import EntityTableGroup from "../../components/entityTable/EntityTableGroup"
+import EntityTable from "../../components/entityTable/EntityTable"
+import { Entity } from "../../types/gen/Entity"
+import { filterEntities } from "../../common/entity"
+import { Damage } from "../../types/gen/Damage"
+import EntityTableHeader from "../../components/entityTable/EntityTableHeader"
 
+const exampleEntities : Entity[] = [
+  {
+    Name: "John Doe",
+    Damage: "D12"
+  },
+  {
+    Name: "Dilf Laungrin",
+    Damage: "D100"
+  },
+  {
+    Name: "Jane Doe",
+    Damage: "D6"
+  },
+  {
+    Name: "Jane Doe",
+    Damage: "D6"
+  },
+  {
+    Name: "Jane Doe",
+    Damage: "D6"
+  },
+  {
+    Name: "Jane Doe",
+    Damage: "D6"
+  },
+  {
+    Name: "Jane Doe",
+    Damage: "D6"
+  },
+  {
+    Name: "Jane Doe",
+    Damage: "D6"
+  },
+  {
+    Name: "Jane Doe",
+    Damage: "D6"
+  }
+]
 
 const Home = () => {
+  
+  const filtered = filterEntities(exampleEntities, [], "Name", "Damage");
+  
   return (
     <div>
       <h1>Home</h1>
       <p>Home page content</p>
       <Link to='/component-lib'>Go to Component Lib</Link>
-      <div className="grid grid-flow-row grid-cols-4 gap-2"> 
-        <Badge variant="d20" size={100}/>
-        <Badge variant="d12" size={100}/>
-        <Badge variant="d10" size={100}/>
-        <Badge variant="d8" size={100}/>
-        <Badge variant="d6" size={100}/>
-        <Badge variant="d4" size={100}/>
-        <Badge variant="warning" size={100}/>
-        <Badge variant="check" size={100}/>
-        <Badge variant="info" size={100}/>
-        <Badge variant="user" size={100}/>
-        <Badge variant="caret-up" size={100}/>
-        <Badge variant="filter" size={100}/>
-        <Badge variant="arrow-right" size={100}/>
-        <Badge variant="search" size={100}/>
-        <Badge variant="pen" size={100}/>
-        <Badge variant="gear" size={100}/>
-      </div>
+      <EntityTableGroup entities={exampleEntities} tableName="Test Table" className="h-[400px]">
+        <EntityTable icon="filter" label="Sorted" data={exampleEntities}>
+          <EntityTableHeader component="Name"/>
+          <EntityTableHeader 
+            component="Damage" 
+            renderer={damage => <div className="text-red-500">{damage}</div>}
+          />
+        </EntityTable>
+          <EntityTable icon="filter" label="Sorted" data={exampleEntities}>
+            <EntityTableHeader component="Name"/>
+            <EntityTableHeader 
+              component="Damage" 
+              renderer={damage => <div className="text-red-500">{damage}</div>}
+            />
+          </EntityTable>
+            <EntityTable icon="filter" label="Sorted" data={exampleEntities}>
+              <EntityTableHeader component="Name"/>
+              <EntityTableHeader 
+                component="Damage" 
+                renderer={damage => <div className="text-red-500">{damage}</div>}
+              />
+            </EntityTable>
+      </EntityTableGroup>
+      <EntityTable icon="filter" label="Sorted" data={exampleEntities} className="h-[150px]">
+        <EntityTableHeader component="Name"/>
+        <EntityTableHeader 
+          component="Damage" 
+          renderer={damage => <div className="text-red-500">{damage}</div>}
+          width="hug"
+        />
+      </EntityTable>
     </div>
   )
 }

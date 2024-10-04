@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: 'CrimsonPro';
+    src: url('./assets/CrimsonPro-VariableFont_wght.ttf');
+}
