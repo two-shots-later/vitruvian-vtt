@@ -56,21 +56,21 @@ const Home = () => {
       <Link to='/component-lib'>Go to Component Lib</Link>
       <EntityTableGroup entities={exampleEntities} tableName="Test Table" className="h-[400px]">
         <EntityTable icon="filter" label="Sorted" data={exampleEntities}>
-          <EntityTableHeader component="Name" hug/>
+          <EntityTableHeader component="Name"/>
           <EntityTableHeader 
             component="Damage" 
             renderer={damage => <div className="text-red-500">{damage}</div>}
           />
         </EntityTable>
           <EntityTable icon="filter" label="Sorted" data={exampleEntities}>
-            <EntityTableHeader component="Name" hug/>
+            <EntityTableHeader component="Name"/>
             <EntityTableHeader 
               component="Damage" 
               renderer={damage => <div className="text-red-500">{damage}</div>}
             />
           </EntityTable>
             <EntityTable icon="filter" label="Sorted" data={exampleEntities}>
-              <EntityTableHeader component="Name" hug/>
+              <EntityTableHeader component="Name"/>
               <EntityTableHeader 
                 component="Damage" 
                 renderer={damage => <div className="text-red-500">{damage}</div>}
@@ -82,7 +82,7 @@ const Home = () => {
         <EntityTableHeader 
           component="Damage" 
           renderer={damage => <div className="text-red-500">{damage}</div>}
-          width="8em"
+          width="hug"
         />
       </EntityTable>
     </div>
