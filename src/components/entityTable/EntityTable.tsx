@@ -79,7 +79,10 @@ export default function EntityTable<A extends Archetype, D extends Archetype = [
   
   let columnLayout = "";
   for(const child of c) {
-    columnLayout += child?.props.hug ? "auto " : "1fr " 
+    let width = child?.props.width ? child.props.width as string : "1fr";
+    if (width == "hug") width = "auto";
+    if (width == "full") width = "1fr";
+    columnLayout += width + " "
   }
   
   const style = {

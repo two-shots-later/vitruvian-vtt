@@ -82,6 +82,7 @@ const Home = () => {
         <EntityTableHeader 
           component="Damage" 
           renderer={damage => <div className="text-red-500">{damage}</div>}
+          width="8em"
         />
       </EntityTable>
     </div>
