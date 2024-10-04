@@ -4,6 +4,15 @@ import { IconId } from "../../types/Icon";
 import { EntityContext } from "./EntityTableGroup";
 import Badge from "../Badge";
 import { twMerge } from "tailwind-merge";
+import React from "react";
+import { EntityTableHeaderProps } from "./EntityTableHeader";
+import { Entity } from "../../types/gen/Entity";
+
+type EntityTableContextData = {
+  entities : Entity[], 
+  archetype : Archetype,
+  column : number
+}
 
 export type TableGroupLabels<A extends Archetype> = {
   [k in A[number] as string]? : string
@@ -21,11 +30,11 @@ export type TableGroupRenderFunction<A extends Archetype, N extends ArchetypeVal
  */
 export type EntityTableProps<A extends Archetype, D extends Archetype = []> = {
   /** @description This table's archetype. This is used to for type checking and column display. */
-  archetype : A,
+  archetypeOverride? : A,
   /** @description These are custom render functions for each component type. */
   renderFunctions? : TableGroupRenderFunctions<A>,
   /** @description These are the entities that are going to be displayed on the table.*/
-  data? : ConcreteEntity<A>[],
+  data? : Entity[],
   /** @description An object of labels that will override the default labels of each component*/
   headerLabels? : TableGroupLabels<A>,
   /** @description An archetype the defines entities that will be filtered out of the table*/
@@ -36,7 +45,10 @@ export type EntityTableProps<A extends Archetype, D extends Archetype = []> = {
   label? : string
   /** @description Class styles to style the table.*/
   className? : string
+  children? : React.ReactElement<EntityTableHeaderProps<A, A[number]>> | React.ReactElement<EntityTableHeaderProps<A, A[number]>>[],
 }
+
+export const EntityTableContext = React.createContext<EntityTableContextData | undefined>(undefined)
 
 /**
  * @description This component is used to display entities in a table format. It can be used in conjunction with the EntityTableGroup component or by itself.
@@ -46,15 +58,17 @@ export type EntityTableProps<A extends Archetype, D extends Archetype = []> = {
  * ```
 */
 export default function EntityTable<A extends Archetype, D extends Archetype = []>({
-  archetype, 
+  archetypeOverride, 
   disallow, 
   icon, 
-  label = "", 
-  headerLabels,
-  renderFunctions,
+  label = "",
   data,
   className,
+  children
 } : EntityTableProps<A, D>) {
+  const c = children instanceof Array ? children : [children];
+  let archetype: A = archetypeOverride ? archetypeOverride : c.map(child => child?.props.component) as A;
+  
   const e = useContext(EntityContext)
   /// This line is a bit confusing. The tableGroup will use the entity context if available and filter from that.
   /// Otherwise, it will use the data prop if available. if both aren't there, it will default to an empty array.
@@ -63,56 +77,27 @@ export default function EntityTable<A extends Archetype, D extends Archetype = [
     data ? data : []
   ;
   
-  const entityHtml = entities.map((entity, entityIndex) => {
-    return archetype.map((componentID, componentIndex) => {
-      const id = componentID as keyof ConcreteEntity<A>;
-      const key = `${id}-${entityIndex}-${componentIndex}`
-      const defaultRenderFunction : TableGroupRenderFunction<A, any, typeof component> = (component : any) => <div>{component}</div>
-      const component = entity[id]
-      const renderFunction = 
-        renderFunctions ? renderFunctions[id] ? renderFunctions[id] as TableGroupRenderFunction<A, any, typeof component> : defaultRenderFunction : defaultRenderFunction
-      const componentHtml = renderFunction(component)
-      const style = {
-        gridRowStart : entityIndex + 2,
-        gridColumnStart : componentIndex + 1
-      }
-      return <div key={key} style={style} className="w-full h-full px-1">{componentHtml}</div>
-    })
-  }).flat()
-  
-  const labelHtml = archetype.map((a, index) => {
-    const l = a as string;
-    const display = headerLabels ? headerLabels[a] || l : l;
-    const style = {
-      gridColumnStart : index + 1,
-      gridRowStart : 1
-    }
-    return <div key={l} className="text-theme-font-secondary border-b border-theme-font-secondary truncate px-1" style={style}>{display}</div>
-  })
-  
-  const gridRowStyle = {
-    gridTemplateRows : `min-content repeat(${entities.length}, minmax(min-content, 1fr))`,
+  let columnLayout = "";
+  for(const child of c) {
+    columnLayout += child?.props.hug ? "auto " : "1fr " 
   }
   
-  const gridColumnStyle = {
-    gridTemplateColumns : `repeat(${archetype.length}, 1fr)`,
+  const style = {
+    gridTemplateRows : `repeat(${entities.length}, min-content)`,
+    gridTemplateColumns : columnLayout,
   }
   
   return (
-    <div className={"flex " + twMerge("gap-1 px-1 h-[1fr]", className)}>
+    <div className={"flex " + twMerge("gap-1 px-1", className)}>
       <div className="flex flex-col gap-2 items-center">
         {icon ? <Badge variant={icon} /> : null}
         <div className="[writingMode:vertical-rl] text-lg text-nowrap truncate">{label}</div>
       </div>
-      <div className="w-full border border-dashed rounded-lg flex flex-col" style={gridRowStyle}>
-        <div className="grid px-1 sticky -top-2 bg-theme-background rounded-t-lg pt-1" style={gridColumnStyle}>
-          {labelHtml}
-        </div>
-        <div className="overflow-scroll h-[1fr]">
-          <div className="grid px-1" style={{...gridRowStyle, ...gridColumnStyle}}>
-            {entityHtml}
-          </div>
-        </div>
+      <div className="w-full border border-dashed rounded-lg grid overflow-y-scroll justify-start px-1" style={style}>
+        {c.map((child, index) => {
+          return <EntityTableContext.Provider value={{ entities, archetype, column : index}} key={"col-" + index}>{child}</EntityTableContext.Provider>
+        })}
+          
       </div>
     </div>
   )

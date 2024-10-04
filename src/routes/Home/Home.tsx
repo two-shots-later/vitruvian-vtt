@@ -4,6 +4,7 @@ import EntityTable from "../../components/entityTable/EntityTable"
 import { Entity } from "../../types/gen/Entity"
 import { filterEntities } from "../../common/entity"
 import { Damage } from "../../types/gen/Damage"
+import EntityTableHeader from "../../components/entityTable/EntityTableHeader"
 
 const exampleEntities : Entity[] = [
   {
@@ -54,21 +55,35 @@ const Home = () => {
       <p>Home page content</p>
       <Link to='/component-lib'>Go to Component Lib</Link>
       <EntityTableGroup entities={exampleEntities} tableName="Test Table" className="h-[400px]">
-        <EntityTable
-          archetype={["Name"]}
-          icon="gear" 
-          label="Named Entities" 
-          headerLabels={{Name : "Specific Name"}}
-        />
-        <EntityTable label="Damage Entities" icon="d20" archetype={["Damage"]} />
-        <EntityTable label="Both" icon="warning" archetype={["Name", "Damage"]} 
-          renderFunctions={{
-            Name : (name : string) => <span className="text-theme-accent">{name}</span>,
-            Damage : (damage : Damage) => <span className="text-red-200">{damage}</span>
-          }}
-        />
+        <EntityTable icon="filter" label="Sorted" data={exampleEntities}>
+          <EntityTableHeader component="Name" hug/>
+          <EntityTableHeader 
+            component="Damage" 
+            renderer={damage => <div className="text-red-500">{damage}</div>}
+          />
+        </EntityTable>
+          <EntityTable icon="filter" label="Sorted" data={exampleEntities}>
+            <EntityTableHeader component="Name" hug/>
+            <EntityTableHeader 
+              component="Damage" 
+              renderer={damage => <div className="text-red-500">{damage}</div>}
+            />
+          </EntityTable>
+            <EntityTable icon="filter" label="Sorted" data={exampleEntities}>
+              <EntityTableHeader component="Name" hug/>
+              <EntityTableHeader 
+                component="Damage" 
+                renderer={damage => <div className="text-red-500">{damage}</div>}
+              />
+            </EntityTable>
       </EntityTableGroup>
-      <EntityTable icon="filter" label="Sorted" data={filtered} archetype={["Name", "Damage"]} className="h-[200px]"/>
+      <EntityTable icon="filter" label="Sorted" data={exampleEntities} className="h-[150px]">
+        <EntityTableHeader component="Name"/>
+        <EntityTableHeader 
+          component="Damage" 
+          renderer={damage => <div className="text-red-500">{damage}</div>}
+        />
+      </EntityTable>
     </div>
   )
 }
