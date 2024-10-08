@@ -18,9 +18,9 @@ pub fn get_current_theme() -> VitruvianTheme {
 
 /// Command for the frontend, returns the theme with the given theme_id.
 #[tauri::command]
-pub fn get_theme(theme_id : String) -> VitruvianTheme {
+pub fn get_theme(theme_id: String) -> VitruvianTheme {
     // This is a dummy functions for now, will be properly implemented in #30
-    
+
     if &theme_id == "green" {
         VitruvianTheme {
             primary: "#a5d6a7".to_string(),
@@ -56,8 +56,8 @@ pub fn get_available_themes() -> Vec<String> {
 
 /// Command for the frontend, sets the current theme to the provided theme.
 #[tauri::command]
-pub fn set_current_theme(theme : VitruvianTheme) {
+pub fn set_current_theme(theme: VitruvianTheme) {
     // This is a dummy functions for now, will be properly implemented in #30
-    
+
     println!("Setting theme to: {:?}", theme);
 }
