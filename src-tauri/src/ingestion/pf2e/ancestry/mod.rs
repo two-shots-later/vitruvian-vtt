@@ -1,10 +1,16 @@
-mod flaw;
 mod boost;
+mod flaw;
 
 use super::{
     core::{
-        description::Description, item::Item, languages::{AdditionalLanguages, Languages}, publication::Publication,
-        rule::Rule, size::SizeKind, traits::Traits, vision::VisionKind,
+        description::Description,
+        item::Item,
+        languages::{AdditionalLanguages, Languages},
+        publication::Publication,
+        rule::Rule,
+        size::SizeKind,
+        traits::Traits,
+        vision::VisionKind,
     },
     Pf2eWorld,
 };
@@ -13,7 +19,6 @@ use boost::BoostValue;
 use flaw::FlawValue;
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, path::PathBuf};
-
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct System {
