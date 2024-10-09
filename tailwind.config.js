@@ -9,6 +9,20 @@ export default {
       'crimson' : ['CrimsonPro', 'serif'],
     },
     extend: {
+      animation: {
+				fade: 'fadeIn .15s ease-in-out',
+			},
+      
+			keyframes: {
+				fadeIn: {
+					from: { opacity: 0 },
+					to: { opacity: 1 },
+				},
+				fadeOut: {
+				  from: { opacity: 1 },
+					to: { opacity: 0 },
+				}
+			},
       colors: {
         red : {
           50 : '#ffc5cd',
