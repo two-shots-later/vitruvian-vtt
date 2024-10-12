@@ -12,7 +12,7 @@ export type EntityTableHeaderProps<A extends Archetype, N extends A[number]> = {
 }
 
 export type EntityTableHeaderWidth = "hug" | "full" | `${number}${SizeUnits}`
-type SizeUnits = "fr" | "px" | "em" | "rem" | "%"
+type SizeUnits = "fr" | "px" | "em" | "rem" | "%" | "vw" | "vh"
 
 /**
 * @description EntityTableHeader discribes a header inside of an EntityTable. If use anywhere outside of an EntityTable it will not render anything.
