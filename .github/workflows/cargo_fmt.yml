@@ -1,0 +1,30 @@
+name : Rust Format Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  rustfmt:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        components: rustfmt
+
+    - name: Run rustfmt on Tauri App
+      working-directory: ./src-tauri
+      run: cargo fmt -- --check
+
+    - name: Run rustfmt on Types Crate
+      working-directory: ./src-types
+      run: cargo fmt -- --check
