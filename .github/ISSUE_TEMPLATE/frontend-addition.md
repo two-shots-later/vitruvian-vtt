@@ -18,3 +18,4 @@ Figma Link: https://www.figma.com/design/pEKOr5N9RJqUNwGoFGXN1Q/Mockups?node-id=
 # Acceptance Criteria
 - [ ] The component should be located at `src/components/{location}`
 - [ ] Make sure all features are well documented with JSDoc. [Here is a guide for more info.](https://www.inkoop.io/blog/a-guide-to-js-docs-for-react-js/)
+- [ ] The component must have a story for the [storybook](https://storybook.js.org/docs). (Located at `src/stories`)
