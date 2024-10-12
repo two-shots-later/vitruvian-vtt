@@ -2,8 +2,6 @@ import { Link } from "react-router-dom"
 import EntityTableGroup from "../../components/entityTable/EntityTableGroup"
 import EntityTable from "../../components/entityTable/EntityTable"
 import { Entity } from "../../types/gen/Entity"
-import { filterEntities } from "../../common/entity"
-import { Damage } from "../../types/gen/Damage"
 import EntityTableHeader from "../../components/entityTable/EntityTableHeader"
 import Modal from "../../components/Modal"
 import { useState } from "react"
@@ -51,8 +49,6 @@ const exampleEntities : Entity[] = [
 const Home = () => {
   
   const [modalActive, setModalActive] = useState(false);
-  
-  const filtered = filterEntities(exampleEntities, [], "Name", "Damage");
   
   return (
     <div>

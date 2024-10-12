@@ -23,7 +23,6 @@ use saving_throws::SavingThrows;
 use serde::{Deserialize, Serialize};
 use skill_feat_levels::SkillFeatLevels;
 use skill_increase_levels::SkillIncreaseLevels;
-use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
 use trained_skills::TrainedSkills;
 
