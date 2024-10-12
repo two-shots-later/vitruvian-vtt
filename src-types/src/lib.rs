@@ -11,8 +11,8 @@ pub mod theme;
 
 pub mod prelude {
     pub use crate::component::core::*;
-    pub use crate::entity::*;
     pub use crate::component::*;
+    pub use crate::entity::*;
     pub use crate::theme::*;
 }
 
@@ -23,36 +23,48 @@ macro_rules! list_types {
             $(
                 <$type>::export_all_to(($path).clone())?;
             )*
-            
+
             vec![$(stringify!($type)),*]
         }
     };
 }
 
-pub fn generate_types(path : &PathBuf) -> Result<(), ts_rs::ExportError> {
+pub fn generate_types(path: &PathBuf) -> Result<(), ts_rs::ExportError> {
     // Entity::export_all_to(path.clone())?;
     // Name::export_all_to(&path)?;
     // Damage::export_all_to(&path)?;
     // Component::export_all_to(&path)?;
-    
+
     let types = list_types!( path;
-        Name, 
+        Name,
         Damage
     );
-    
+
     // Concrete types
     VitruvianTheme::export_all_to(path.clone())?;
-    
+
     // Generate the Component file
-    let imports = types.iter().map(|t| format!("import {{ {t} }} from \"./{t}\";")).collect::<Vec<_>>().join("\n");
-    let component_main = types.iter().map(|t| format!("{t}")).collect::<Vec<_>>().join(" | ");
+    let imports = types
+        .iter()
+        .map(|t| format!("import {{ {t} }} from \"./{t}\";"))
+        .collect::<Vec<_>>()
+        .join("\n");
+    let component_main = types
+        .iter()
+        .map(|t| format!("{t}"))
+        .collect::<Vec<_>>()
+        .join(" | ");
     let component_file = format!("{imports}\n\nexport type Component = {component_main}");
     fs::write(path.clone().join("Component.ts"), component_file)?;
-    
+
     // Generate the Entity file
-    let entity_params = types.iter().map(|t| format!("{t}? : {t}")).collect::<Vec<_>>().join(", \n\t");
+    let entity_params = types
+        .iter()
+        .map(|t| format!("{t}? : {t}"))
+        .collect::<Vec<_>>()
+        .join(", \n\t");
     let entity_file = format!("import {{ Component }} from \"./Component\";\n{imports}\n\nexport type Entity = {{\n\t{entity_params}\n}}");
     fs::write(path.join("Entity.ts"), entity_file)?;
-    
+
     Ok(())
 }

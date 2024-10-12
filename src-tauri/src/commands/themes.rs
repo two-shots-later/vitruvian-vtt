@@ -12,15 +12,15 @@ pub fn get_current_theme() -> VitruvianTheme {
         background_alt: "#2e2e2e".to_string(),
         font_color_primary: "#ffffff".to_string(),
         font_color_secondary: "#909090".to_string(),
-        font_primary : "CrimsonPro".to_string()
+        font_primary: "CrimsonPro".to_string(),
     }
 }
 
 /// Command for the frontend, returns the theme with the given theme_id.
 #[tauri::command]
-pub fn get_theme(theme_id : String) -> VitruvianTheme {
+pub fn get_theme(theme_id: String) -> VitruvianTheme {
     // This is a dummy functions for now, will be properly implemented in #30
-    
+
     if &theme_id == "green" {
         VitruvianTheme {
             primary: "#a5d6a7".to_string(),
@@ -30,7 +30,7 @@ pub fn get_theme(theme_id : String) -> VitruvianTheme {
             background_alt: "#2e2e2e".to_string(),
             font_color_primary: "#ffffff".to_string(),
             font_color_secondary: "#909090".to_string(),
-            font_primary : "CrimsonPro".to_string()
+            font_primary: "CrimsonPro".to_string(),
         }
     } else if &theme_id == "red" {
         VitruvianTheme {
@@ -41,7 +41,7 @@ pub fn get_theme(theme_id : String) -> VitruvianTheme {
             background_alt: "#2e2e2e".to_string(),
             font_color_primary: "#ffffff".to_string(),
             font_color_secondary: "#909090".to_string(),
-            font_primary : "CrimsonPro".to_string()
+            font_primary: "CrimsonPro".to_string(),
         }
     } else {
         get_current_theme()
@@ -56,8 +56,8 @@ pub fn get_available_themes() -> Vec<String> {
 
 /// Command for the frontend, sets the current theme to the provided theme.
 #[tauri::command]
-pub fn set_current_theme(theme : VitruvianTheme) {
+pub fn set_current_theme(theme: VitruvianTheme) {
     // This is a dummy functions for now, will be properly implemented in #30
-    
+
     println!("Setting theme to: {:?}", theme);
 }

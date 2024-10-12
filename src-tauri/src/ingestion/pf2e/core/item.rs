@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 #[serde(untagged)]
 pub enum ItemLevel {
     U8(u8),
-    String(String)
+    String(String),
 }
 
 /// An reference to an item in Pathfinder 2nd Edition.

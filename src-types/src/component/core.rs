@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use ts_rs::TS;
 
-use super::{ComponentMarker};
+use super::ComponentMarker;
 
 //=========================================================================================================================
 //           Core Types
@@ -22,7 +22,6 @@ pub enum Dice {
 //           Core Components
 //=========================================================================================================================
 
-
 #[derive(TS, Deserialize, Serialize, Clone)]
 pub struct Name(pub String);
 impl ComponentMarker for Name {}
@@ -36,5 +35,4 @@ impl ComponentMarker for Damage {}
 //=========================================================================================================================
 
 #[cfg(test)]
-mod tests {
-}
+mod tests {}

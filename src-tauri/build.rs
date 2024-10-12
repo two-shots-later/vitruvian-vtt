@@ -1,7 +1,7 @@
 use std::env;
 use vitruvian_types;
 
-const GENERATED_TYPES_EXPORT_LOCATION : &'static str = "../src/types/gen";
+const GENERATED_TYPES_EXPORT_LOCATION: &'static str = "../src/types/gen";
 
 fn main() {
     tauri_build::build();
