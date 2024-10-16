@@ -2,8 +2,11 @@ import { CSSProperties } from "react"
 import { parseUnitSize, UnitSize } from "../common/types"
 
 export type CharacterPortraitProps = {
+  /** This is the image that will be used in the protrait, with an optional x and y offset and image scale. Those are each a percentage of the portraits size. So, if the image scale is 100, that means that the image will be the same size of the portrait.*/
   image? : CharacterPortraitImage,
+  /** This width of the icon. The portrait defaults to fill the space given. */
   width? : UnitSize,
+  /** This is the icon that will be used in the portrait. By default, this will be the eye icon. The icons are shown when there is no image. */
   icon? : CharacterPortraitIcon,
 }
 
@@ -16,10 +19,12 @@ type CharacterPortraitImage = string | {
   image : string,
   x_offset? : number,
   y_offset? : number,
+  scale? : number,
 }
 
 type CharacterPortraitIcon = "eye" | "moon"
 
+/** The Character portrait is a component to give visual style and character to a character card or character sheet.*/
 export default function CharacterPortrait({ image, width = "full", icon = "eye" }: CharacterPortraitProps) {
   const parsedWidth = parseUnitSize(width)
   
@@ -28,7 +33,7 @@ export default function CharacterPortrait({ image, width = "full", icon = "eye" 
     const style = imageStyle(image)
     inner = (
       <div className="absolute top-0 left-0 flex justify-center items-center w-full h-full">
-        <div className="w-[85%] h-[85%] rounded-full border-4 border-white" style={style}/>
+        <div className="w-[85%] h-[85%] rounded-full border-4 border-white bg-white" style={style}/>
       </div>
     )
   } else {
@@ -52,11 +57,15 @@ function imageStyle(image : CharacterPortraitImage) : CSSProperties {
     return {
       backgroundImage: `url(${image})`,
       backgroundPosition: "0px 0px",
+      backgroundSize: "100%",
+      backgroundRepeat: "no-repeat",
     }
   } else {
     return {
       backgroundImage: `url(${image.image})`,
-      backgroundPosition: `${image.x_offset ?? 0}px ${image.y_offset ?? 0}px`,
+      backgroundPosition: `${image.x_offset ?? 0}% ${image.y_offset ?? 0}%`,
+      backgroundSize: `${image.scale ?? 100}%`,
+      backgroundRepeat: "no-repeat",
     }
   }
 }
