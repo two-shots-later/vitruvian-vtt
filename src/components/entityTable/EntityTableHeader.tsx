@@ -1,6 +1,7 @@
 import { ReactElement, useContext } from "react"
 import { Archetype, ArchetypeValue, ConcreteEntity} from "../../common/entity"
 import { EntityTableContext } from "./EntityTable"
+import { UnitSize } from "../../common/types"
 
 type TableHeaderRenderFunction<A extends Archetype, N extends ArchetypeValue, V extends ConcreteEntity<A>[N]> = (component : V) => ReactElement
 
@@ -8,11 +9,8 @@ export type EntityTableHeaderProps<A extends Archetype, N extends A[number]> = {
   component : N,
   label? : string,
   renderer? : TableHeaderRenderFunction<A, N, ConcreteEntity<A>[N]>,
-  width? : EntityTableHeaderWidth
+  width? : UnitSize
 }
-
-export type EntityTableHeaderWidth = "hug" | "full" | `${number}${SizeUnits}`
-type SizeUnits = "fr" | "px" | "em" | "rem" | "%" | "vw" | "vh"
 
 /**
 * @description EntityTableHeader discribes a header inside of an EntityTable. If use anywhere outside of an EntityTable it will not render anything.

@@ -7,6 +7,7 @@ import { twMerge } from "tailwind-merge";
 import React from "react";
 import { EntityTableHeaderProps } from "./EntityTableHeader";
 import { Entity } from "../../types/gen/Entity";
+import { parseUnitSize } from "../../common/types";
 
 type EntityTableContextData = {
   entities : Entity[], 
@@ -73,9 +74,7 @@ export default function EntityTable<A extends Archetype, D extends Archetype = [
   
   let columnLayout = "";
   for(const child of c) {
-    let width = child?.props.width ? child.props.width as string : "1fr";
-    if (width == "hug") width = "auto";
-    if (width == "full") width = "1fr";
+    let width = parseUnitSize(child?.props.width ? child.props.width : "1fr");
     columnLayout += width + " "
   }
   
