@@ -6,3 +6,9 @@ export function parseUnitSize(unitSize: UnitSize): string {
     if(unitSize === "hug") return "auto"
     return unitSize
 }
+
+/** This is a type that should be used on any component that accepts styling. Doen't apply for all components. */
+export type StyledComponent = {
+  className?: string,
+  style?: React.CSSProperties,
+}

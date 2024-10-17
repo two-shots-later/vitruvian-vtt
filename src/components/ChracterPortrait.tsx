@@ -1,5 +1,5 @@
 import { CSSProperties } from "react"
-import { parseUnitSize, UnitSize } from "../common/types"
+import { parseUnitSize, StyledComponent, UnitSize } from "../common/types"
 
 export type CharacterPortraitProps = {
   /** This is the image that will be used in the protrait, with an optional x and y offset and image scale. Those are each a percentage of the portraits size. So, if the image scale is 100, that means that the image will be the same size of the portrait.*/
@@ -8,11 +8,6 @@ export type CharacterPortraitProps = {
   width? : UnitSize,
   /** This is the icon that will be used in the portrait. By default, this will be the eye icon. The icons are shown when there is no image. */
   icon? : CharacterPortraitIcon,
-}
-
-type StyledComponent = {
-  className?: string,
-  style?: React.CSSProperties,
 }
 
 type CharacterPortraitImage = string | {

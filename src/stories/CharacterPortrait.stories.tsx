@@ -25,12 +25,17 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** The Character Portrait when an image is defined */
 export const ProfileImage: Story = {
   args: {
     image : {image : "test_character.png", x_offset: 7, y_offset: -2, scale: 300}
   },
 };
+
+/** The Character Portrait with the eye icon. This is the default mode. */
 export const EyeIcon: Story = {};
+
+/** The Character Portrait with the moon icon. */
 export const MoonIcon: Story = {
   args: {
     icon: 'moon',
