@@ -4037,6 +4037,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a"
 
 [[package]]
+name = "vitruvian-dbs"
+version = "0.1.0"
+dependencies = [
+ "vitruvian-types",
+]
+
+[[package]]
 name = "vitruvian-types"
 version = "0.1.0"
 dependencies = [
@@ -4063,6 +4070,7 @@ dependencies = [
  "tauri-build",
  "tauri-plugin-shell",
  "ts-rs 9.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "vitruvian-dbs",
  "vitruvian-types",
 ]
 
