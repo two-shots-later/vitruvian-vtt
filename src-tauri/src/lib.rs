@@ -3,7 +3,6 @@ use serde_json::Value;
 use vitruvian_types::prelude::*;
 
 pub mod commands;
-pub mod ingestion;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
