@@ -1,0 +1,38 @@
+input:focus::placeholder {
+    color: white;
+    background-color: var(--color-background);
+    transform : translateY(-1rem);
+    transition: all 0.2s ease-in-out;
+}
+
+.field {
+    position: relative;
+    border: none;
+    appearance: none;
+    outline: none;
+    padding: 0.5rem;
+}
+
+.field input {
+    padding: 0.5rem;
+    font-size: 16pt;
+    background-color: var(--background-color);
+}
+
+.field .placeholder {
+    position: absolute;
+    left: 1.0rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--font-color-secondary);
+    font-size: 16pt;
+    background-color: var(--background-color);
+    padding: 0 5px;
+    transition: top 0.2s ease-in-out, font-size 0.2s ease-in-out;
+}
+
+.field input.filled + .placeholder,
+.field input:focus + .placeholder {
+    top: 0.5rem;
+    font-size: 12pt;
+}

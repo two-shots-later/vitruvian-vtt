@@ -1,5 +1,5 @@
-import { Entity } from "../../types/gen/Entity";
-import CharacterPortrait from "../../components/ChracterPortrait";
+import Input from "../../components/input/Input";
+import WizardComponent, { WizardStepHandler } from "../../components/wizard/WizardCompnent";
 
 const Home = () => {
   return (
@@ -7,9 +7,26 @@ const Home = () => {
       <div className="flex flex-col gap-6 justify-center items-center px-56">
         {/* <CharacterPortrait image={{image : "test_character.png", x_offset: -90}} icon="moon"/>
         <CharacterPortrait/> */}
+        <WizardComponent startingData={{name : "Test"}}>
+          {Step1}
+        </WizardComponent>
       </div>
     </div>
   );
 };
 
 export default Home;
+
+type TestType = {
+  name?: string;
+  age?: number;
+};
+
+function Step1({ data, submitStep } : WizardStepHandler<TestType>) {
+  return (
+    <div className="flex flex-col gap-2">
+      <Input label="Test" placeholder="test"/>
+      <Input label="Test" placeholder="test"/>
+    </div>
+  )
+}

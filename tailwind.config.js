@@ -54,6 +54,7 @@ export default {
         'theme-secondary' : 'var(--secondary-color)',
         'theme-accent' : 'var(--accent-color)',
         'theme-background' : 'var(--background-color)',
+        'theme-background-secondary' : 'var(--background-alt-color)',
         'theme-font-primary' : 'var(--font-color-primary)',
         'theme-font-secondary' : 'var(--font-color-secondary)',
         'alt-background' : 'var(--secondary-background-color)',
