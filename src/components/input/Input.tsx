@@ -1,8 +1,9 @@
 import { forwardRef } from "react";
 import "./input.css"
+import Icon from "../Icon";
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  label: string;
+  
 };
 
 const Input = forwardRef<HTMLInputElement, InputProps>((props: InputProps, ref) => {
@@ -23,9 +24,15 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props: InputProps, ref) 
         <input className="p-1 text-theme-font-primary bg-theme-background-secondary border border-white rounded-md" 
           ref={ref} 
           type="text" 
-          {...{...props, onBlur, placeholder: undefined}} 
+          {...{...props, 
+            autoCapitalize : props.autoCapitalize ? props.autoCapitalize : false, 
+            autoComplete : props.autoComplete ? props.autoComplete : false,
+            onBlur, 
+            placeholder: undefined}
+          } 
         />
       <span className="placeholder">{placeholder}</span>
+      <span className="error"><Icon variant="warning"/></span>
       </label>
     );
 })

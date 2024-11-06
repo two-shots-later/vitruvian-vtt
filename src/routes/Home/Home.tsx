@@ -25,8 +25,8 @@ type TestType = {
 function Step1({ data, submitStep } : WizardStepHandler<TestType>) {
   return (
     <div className="flex flex-col gap-2">
-      <Input label="Test" placeholder="test"/>
-      <Input label="Test" placeholder="test"/>
+      <Input type="email" placeholder="Email"/>
+      <Input placeholder="Name"/>
     </div>
   )
 }

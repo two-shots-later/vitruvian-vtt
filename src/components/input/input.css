@@ -15,8 +15,10 @@ input:focus::placeholder {
 
 .field input {
     padding: 0.5rem;
+    padding-right: calc(0.5rem + 28px);
     font-size: 16pt;
     background-color: var(--background-color);
+    outline: none;;
 }
 
 .field .placeholder {
@@ -35,4 +37,26 @@ input:focus::placeholder {
 .field input:focus + .placeholder {
     top: 0.5rem;
     font-size: 12pt;
+}
+
+.field input:invalid ~ .error {
+    visibility: visible;;
+    
+}
+
+.field input:invalid {
+    border-color: var(--error-color);
+}
+
+.field input:invalid + .placeholder {
+    color: var(--error-color);
+}
+
+.field .error {
+    position: absolute;
+    top: calc(50% + 2px);
+    transform: translateY(-50%);
+    fill: var(--error-color);
+    right:1.0rem;
+    visibility: hidden;
 }
