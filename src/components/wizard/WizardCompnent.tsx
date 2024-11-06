@@ -1,38 +1,41 @@
-import React, { useState } from "react"
+import { useState } from "react"
+import {WizardComponentContext} from "./WizardComponentContext"
 
 export type WizardComponentProps<T extends object> = {
-  children? : Children<T>
-  startingData : T
+  startingData: T;
+  onWizardComplete? : (data: T) => void;
+  children: React.ReactNode | React.ReactNode[];
 }
 
-// type Children<T> = React.ReactElement<WizardStep<T>>[] | React.ReactElement<WizardStep<T>>
-type Children<T> = Child<T>[] | Child<T>
-type Child<T> = (handler : WizardStepHandler<T>) => React.ReactNode
 export type WizardStepHandler<T> = {
   data : T,
   submitStep : (data : T) => void
 }
 
-const WizardComponent = <T extends object>({ children, startingData} : WizardComponentProps<T>) => {
+const WizardComponent = <T extends object>({ children, startingData, onWizardComplete = () => {} } : WizardComponentProps<T>) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [stepData, setStepData] = useState<T>(startingData);
+  const [data, setData] = useState<T>(startingData);
   
   let childrenArray = Array.isArray(children) ?  children : [children];
   
-  const child = childrenArray[currentStep];
-  if (!child) {
+  if(currentStep >= childrenArray.length) {
+    onWizardComplete(data);
+  }
+  
+  const Child = childrenArray[currentStep];
+  if (!Child) {
     return null;
   }
   
   const onSubmitStep = (data : T) => {
-    setStepData({...stepData, ...data});
+    setData({...data, ...data});
     setCurrentStep(currentStep + 1);
   }
   
   return (
-    <div>
-      {child({data : stepData, submitStep : onSubmitStep})}
-    </div>
+    <WizardComponentContext.Provider value={{ data: data, submitStep : onSubmitStep}}>
+      {Child}
+    </WizardComponentContext.Provider>
   )
 }
 

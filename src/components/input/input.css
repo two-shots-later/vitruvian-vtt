@@ -10,15 +10,17 @@ input:focus::placeholder {
     border: none;
     appearance: none;
     outline: none;
-    padding: 0.5rem;
+    margin: 0.5rem;
 }
 
 .field input {
     padding: 0.5rem;
     padding-right: calc(0.5rem + 28px);
+    padding-left: 1.0rem;
     font-size: 16pt;
     background-color: var(--background-color);
-    outline: none;;
+    outline: none;
+    user-select: none;
 }
 
 .field .placeholder {
@@ -31,11 +33,13 @@ input:focus::placeholder {
     background-color: var(--background-color);
     padding: 0 5px;
     transition: top 0.2s ease-in-out, font-size 0.2s ease-in-out;
+    user-select: none;
+    border-radius: 5px;
 }
 
 .field input.filled + .placeholder,
 .field input:focus + .placeholder {
-    top: 0.5rem;
+    top: 0rem;
     font-size: 12pt;
 }
 
