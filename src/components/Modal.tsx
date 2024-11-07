@@ -1,5 +1,6 @@
 import { CSSProperties, useState } from "react"
 import { createPortal } from "react-dom"
+import { UnitSize, parseUnitSize } from "../common/types"
 
 /** The Props for the modal component */
 export type ModalProps = {
@@ -17,6 +18,8 @@ export type ModalProps = {
   noTransition?: boolean,
   /** Whether the modal should allow background scrolling or not */
   allowBackgroundScroll?: boolean,
+  width? : UnitSize,
+  height? : UnitSize
 }
 
 /** This is the modal component for Vitruvian VTT. Unlike other Modals, the parrent of the modal is responsible for controlling the active state */
@@ -27,7 +30,9 @@ export default function Modal({
   onOpen = () => {},
   onClose = () => {},
   noTransition = false,
-  allowBackgroundScroll = false
+  allowBackgroundScroll = false,
+  width = "full",
+  height = "full"
 } : ModalProps) {
   
   const [style, setStyle] = useState<CSSProperties>({
@@ -52,9 +57,16 @@ export default function Modal({
     }
   }
   
-  return active ? createPortal(<div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-45" style={noTransition ? undefined : style} onClick={closeFunction}>
-    <div className="z-20" onClick={event => event.stopPropagation()}>
-      {typeof children === "function" ? children(closeFunction) : children}
+  const pos = {
+    width : parseUnitSize(width),
+    height : parseUnitSize(height)
+  }
+  
+  return active ? createPortal((
+    <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-45" style={noTransition ? undefined : style} onClick={closeFunction}>
+      <div className="z-20" style={pos} onClick={event => event.stopPropagation()}>
+        {typeof children === "function" ? children(closeFunction) : children}
+      </div>
     </div>
-  </div>, document.body) : null;
+  ), document.body) : null;
 }

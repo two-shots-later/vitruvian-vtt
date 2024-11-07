@@ -16,7 +16,7 @@ const Home = () => {
         <CharacterPortrait image={{image : "test_character.png", x_offset: 90, scale:200}} icon="moon"/>
         <CharacterPortrait/>
         <Modal active={open} setActive={setOpen}>
-            <WizardComponent startingData={{name : "Test Testington", email: "test@test.com"}} onWizardComplete={() => setOpen(false)}>
+            <WizardComponent onWizardAbort={() => setOpen(false)} startingData={{name : "Test Testington", email: "test@test.com"}} onWizardComplete={() => setOpen(false)}>
               <Step1/>
               <Step2/>
             </WizardComponent>
@@ -35,7 +35,7 @@ type TestType = {
 
 function Step1() {
   
-  const { data, submitStep} = useWizardComponentContext<TestType>()
+  const { data, submitStep, abort} = useWizardComponentContext<TestType>()
   
   const [email, _setEmail, EmailInput] = useInput({
     width: "25rem",
@@ -47,18 +47,25 @@ function Step1() {
   return (
     <div className="flex flex-col justify-center items-center py-10 gap-2 w-[80vw] bg-theme-background border rounded-lg">
       {EmailInput}
-      <button className="border p-2 rounded-md w-16" onClick={() => submitStep({email})}>Next</button>
+      <div className="w-full flex justify-center gap-4">
+        <button className="border p-2 rounded-md w-16" onClick={abort}>Cancel</button>
+        <button className="border p-2 rounded-md w-16" onClick={() => submitStep({email})}>Next</button>
+      </div>
     </div>
   )
 }
 
 function Step2() {
-  const { data, submitStep} = useWizardComponentContext<TestType>()
+  const { data, submitStep, backStep, abort} = useWizardComponentContext<TestType>()
   
   return (
     <div className="flex flex-col justify-center items-center py-10 gap-2 w-[80vw] bg-theme-background border rounded-lg">
       <div>Your Email: {data.email}</div>
-      <button className="border p-2 rounded-md w-16" onClick={() => submitStep({})}>Done</button>
+      <div className="w-full flex justify-center gap-4">
+        <button className="border p-2 rounded-md w-16" onClick={backStep}>Back</button>
+        <button className="border p-2 rounded-md w-16" onClick={abort}>Cancel</button>
+        <button className="border p-2 rounded-md w-16" onClick={() => submitStep({})}>Done</button>
+      </div>
     </div>
   )
 }
