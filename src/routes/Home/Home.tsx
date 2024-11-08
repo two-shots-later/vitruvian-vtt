@@ -41,7 +41,7 @@ function Step1() {
     width: "25rem",
     placeholder: "Email",
     value: data.email,
-    type: "email"
+    type: "email",
   });
   
   return (

@@ -5,10 +5,11 @@ import { UnitSize, parseUnitSize } from "../../common/types";
 
 export type InputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "className"> & {
   width?: UnitSize;
+  onValueChange? : (value : string) => void;
 };
 
 const Input = forwardRef<HTMLInputElement, InputProps>((props: InputProps, ref) => {
-  const { placeholder, width = "full", value} = props;
+  const { placeholder, width = "full", value, onValueChange = () => {} } = props;
   
   const onBlur = (event : React.FocusEvent<HTMLInputElement>) => {
     props.onBlur && props.onBlur(event);
@@ -20,23 +21,29 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props: InputProps, ref) 
     }
   }
   
+  const onChange = (event : React.ChangeEvent<HTMLInputElement>) => {
+    onValueChange(event.target.value);
+    props.onChange && props.onChange(event);
+  }
+  
   const widthStyle = width ? {width : parseUnitSize(width)} : {};
   
   return (
       <label className="field mt-2" style={widthStyle}>
-        <input 
+        <input
+          autoCapitalize="false"
+          autoComplete="false"
+          type="text"
+          ref={ref} 
+          {...props}
+          value={value}
           className={`${(value !== undefined && value !== "") ? "filled " : ""}text-theme-font-primary bg-theme-background-secondary border border-white rounded-md`} 
           style={widthStyle}
-          ref={ref} 
-          type="text" 
-          {...{...props, 
-            autoCapitalize : props.autoCapitalize ? props.autoCapitalize : "false", 
-            autoComplete : props.autoComplete ? props.autoComplete : "false", 
-            onBlur,
-            placeholder: undefined}
-          } 
+          onBlur={onBlur}
+          onChange={onChange}
+          placeholder={undefined}
         />
-        <span className="placeholder">{placeholder}</span>
+        <span className="placeholder hover:cursor-text">{placeholder}</span>
         <span className="error"><Icon variant="warning"/></span>
       </label>
     );
@@ -48,7 +55,7 @@ export function useInput(props : InputProps) : [string, React.Dispatch<React.Set
   
   const value : string = props.value ? Array.isArray(props.value) ? props.value[0] : props.value : "";
   const [input, setInput] = useState<string>(value);
-  const component = <Input {...props} value={input} onChange={(event) => setInput(event.target.value)}/>;
+  const component = <Input {...props} value={input} onValueChange={(value) => setInput(value)}/>;
   
   return [input, setInput, component]
 }
