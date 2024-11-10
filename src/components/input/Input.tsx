@@ -4,7 +4,9 @@ import Icon from "../Icon";
 import { UnitSize, parseUnitSize } from "../../common/types";
 
 export type InputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "className"> & {
+  /* The width of the input. Defaults to full */
   width?: UnitSize;
+  /* This is a callback that is called when the value of the input changes. This mirrors the `onChange` callback. */ 
   onValueChange? : (value : string) => void;
 };
 
@@ -29,7 +31,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props: InputProps, ref) 
   const widthStyle = width ? {width : parseUnitSize(width)} : {};
   
   return (
-      <label className="field mt-2" style={widthStyle}>
+      <label className="field mt-2 h-full" style={widthStyle}>
         <input
           autoCapitalize="false"
           autoComplete="false"
@@ -51,6 +53,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props: InputProps, ref) 
 
 export default Input;
 
+/* This hook is used to manage the state of an input that you use so you don't have to do them yourselves.*/
 export function useInput(props : InputProps) : [string, React.Dispatch<React.SetStateAction<string>>, React.ReactNode] {
   
   const value : string = props.value ? Array.isArray(props.value) ? props.value[0] : props.value : "";

@@ -1,16 +1,11 @@
-input:focus::placeholder {
-    color: white;
-    background-color: var(--color-background);
-    transform : translateY(-1rem);
-    transition: all 0.2s ease-in-out;
-}
-
 .field {
+    --animation-duration : 0.2s;
     position: relative;
     border: none;
     appearance: none;
     outline: none;
     margin: 0.5rem;
+    display: inline-block;
 }
 
 .field input {
@@ -32,14 +27,15 @@ input:focus::placeholder {
     font-size: 16pt;
     background-color: var(--background-color);
     padding: 0 5px;
-    transition: top 0.2s ease-in-out, font-size 0.2s ease-in-out;
+    transition: top var(--animation-duration) ease-in-out, font-size var(--animation-duration) ease-in-out, transform var(--animation-duration) ease-in-out;
     user-select: none;
     border-radius: 5px;
 }
 
 .field input.filled + .placeholder,
 .field input:focus + .placeholder {
-    top: 0rem;
+    top: 0;
+    /* transform: translateY(calc(-16pt - 0.5rem)); */
     font-size: 12pt;
 }
 

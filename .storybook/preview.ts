@@ -17,7 +17,8 @@ const theme : VitruvianTheme = {
     background_alt: "#2e2e2e",
     font_color_primary: "#ffffff",
     font_color_secondary: "#909090",
-    font_primary : "CrimsonPro"
+    font_primary : "CrimsonPro",
+    error: "#ff0000"
 }
 
 applyTheme(theme);
