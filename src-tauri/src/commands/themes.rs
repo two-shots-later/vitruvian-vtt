@@ -13,6 +13,7 @@ pub fn get_current_theme() -> VitruvianTheme {
         font_color_primary: "#ffffff".to_string(),
         font_color_secondary: "#909090".to_string(),
         font_primary: "CrimsonPro".to_string(),
+        error: "#ff0000".to_string(),
     }
 }
 
@@ -20,7 +21,6 @@ pub fn get_current_theme() -> VitruvianTheme {
 #[tauri::command]
 pub fn get_theme(theme_id: String) -> VitruvianTheme {
     // This is a dummy functions for now, will be properly implemented in #30
-
     if &theme_id == "green" {
         VitruvianTheme {
             primary: "#a5d6a7".to_string(),
@@ -31,6 +31,7 @@ pub fn get_theme(theme_id: String) -> VitruvianTheme {
             font_color_primary: "#ffffff".to_string(),
             font_color_secondary: "#909090".to_string(),
             font_primary: "CrimsonPro".to_string(),
+            error: "#ff0000".to_string(),
         }
     } else if &theme_id == "red" {
         VitruvianTheme {
@@ -42,6 +43,7 @@ pub fn get_theme(theme_id: String) -> VitruvianTheme {
             font_color_primary: "#ffffff".to_string(),
             font_color_secondary: "#909090".to_string(),
             font_primary: "CrimsonPro".to_string(),
+            error: "#ff0000".to_string(),
         }
     } else {
         get_current_theme()

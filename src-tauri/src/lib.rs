@@ -30,7 +30,7 @@ fn set_test_data(data: Value) {
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
-pub fn run() {
+pub fn run_main_app() {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
         .invoke_handler(tauri::generate_handler![
@@ -45,3 +45,20 @@ pub fn run() {
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
+
+// #[cfg_attr(mobile, tauri::mobile_entry_point)]
+// pub fn run_storybook() {
+//     tauri::Builder::default()
+//         .plugin(tauri_plugin_shell::init())
+//         .invoke_handler(tauri::generate_handler![
+//             greet,
+//             get_test_data,
+//             set_test_data,
+//             themes::get_current_theme,
+//             themes::get_theme,
+//             themes::get_available_themes,
+//             themes::set_current_theme,
+//         ])
+//         .run(tauri::generate_context!())
+//         .expect("error while running tauri application");
+// }

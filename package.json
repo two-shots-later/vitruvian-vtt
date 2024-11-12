@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "tauri dev --config src-tauri/storybook.conf.json",
+    "fmt" : "cargo fmt --manifest-path src-tauri/Cargo.toml & cargo fmt --manifest-path src-types/Cargo.toml & cargo fmt --manifest-path src-dbs/Cargo.toml",
     "build-storybook": "storybook build"
   },
   "dependencies": {

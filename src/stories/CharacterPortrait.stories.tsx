@@ -6,11 +6,11 @@ import CharacterPortrait from '../components/ChracterPortrait';
 const meta = {
   title: 'Character Portrait',
   component: CharacterPortrait,
-  decorators:[
-    (story) => {
-      return <div className='w-[80vw]'>{story()}</div>
-    }
-  ],
+  // decorators:[
+  //   (story) => {
+  //     return <div className='w-[80vw]'>{story()}</div>
+  //   }
+  // ],
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: 'centered',
@@ -28,7 +28,7 @@ type Story = StoryObj<typeof meta>;
 /** The Character Portrait when an image is defined */
 export const ProfileImage: Story = {
   args: {
-    image : {image : "test_character.png", x_offset: 7, y_offset: -2, scale: 300}
+    image : {image : "test_character.png", x_offset: 7, y_offset: -2, scale: 300},
   },
 };
 

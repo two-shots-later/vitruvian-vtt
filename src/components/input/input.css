@@ -1,0 +1,62 @@
+.field {
+    --animation-duration : 0.2s;
+    position: relative;
+    border: none;
+    appearance: none;
+    outline: none;
+    margin: 0.5rem;
+    display: inline-block;
+}
+
+.field input {
+    padding: 0.5rem;
+    padding-right: calc(0.5rem + 28px);
+    padding-left: 1.0rem;
+    font-size: 16pt;
+    background-color: var(--background-color);
+    outline: none;
+    user-select: none;
+}
+
+.field .placeholder {
+    position: absolute;
+    left: 1.0rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--font-color-secondary);
+    font-size: 16pt;
+    background-color: var(--background-color);
+    padding: 0 5px;
+    transition: top var(--animation-duration) ease-in-out, font-size var(--animation-duration) ease-in-out, transform var(--animation-duration) ease-in-out;
+    user-select: none;
+    border-radius: 5px;
+}
+
+.field input.filled + .placeholder,
+.field input:focus + .placeholder {
+    top: 0;
+    /* transform: translateY(calc(-16pt - 0.5rem)); */
+    font-size: 12pt;
+}
+
+.field input:invalid ~ .error {
+    visibility: visible;;
+    
+}
+
+.field input:invalid {
+    border-color: var(--error-color);
+}
+
+.field input:invalid + .placeholder {
+    color: var(--error-color);
+}
+
+.field .error {
+    position: absolute;
+    top: calc(50% + 2px);
+    transform: translateY(-50%);
+    fill: var(--error-color);
+    right:1.0rem;
+    visibility: hidden;
+}
