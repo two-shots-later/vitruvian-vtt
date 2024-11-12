@@ -21,7 +21,6 @@ pub fn get_current_theme() -> VitruvianTheme {
 #[tauri::command]
 pub fn get_theme(theme_id: String) -> VitruvianTheme {
     // This is a dummy functions for now, will be properly implemented in #30
-
     if &theme_id == "green" {
         VitruvianTheme {
             primary: "#a5d6a7".to_string(),

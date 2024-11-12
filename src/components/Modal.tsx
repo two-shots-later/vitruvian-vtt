@@ -5,7 +5,7 @@ import { UnitSize, parseUnitSize } from "../common/types"
 /** The Props for the modal component */
 export type ModalProps = {
   /** The content of the modal. This can be any react component or a function that takes in one function and returns any component. The input to that function is a function that closes the model */
-  children: ((close : () => void) => React.ReactNode) | React.ReactNode,
+  children?: ((close : () => void) => React.ReactNode) | React.ReactNode,
   /** Whether the modal is active or not. */
   active: boolean,
   /** A function that sets the active state of the value passed into the modal */
@@ -31,8 +31,8 @@ export default function Modal({
   onClose = () => {},
   noTransition = false,
   allowBackgroundScroll = false,
-  width = "full",
-  height = "full"
+  width = "hug",
+  height = "hug"
 } : ModalProps) {
   
   const [style, setStyle] = useState<CSSProperties>({
@@ -59,12 +59,12 @@ export default function Modal({
   
   const pos = {
     width : parseUnitSize(width),
-    height : parseUnitSize(height)
+    height : parseUnitSize(height),
   }
   
   return active ? createPortal((
-    <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-45" style={noTransition ? undefined : style} onClick={closeFunction}>
-      <div className="z-20" style={pos} onClick={event => event.stopPropagation()}>
+    <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-45 z-40" style={noTransition ? undefined : style} onClick={closeFunction}>
+      <div style={pos} onClick={event => event.stopPropagation()}>
         {typeof children === "function" ? children(closeFunction) : children}
       </div>
     </div>
