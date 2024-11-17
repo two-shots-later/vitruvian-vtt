@@ -3,10 +3,11 @@ import CharacterCard from "../../components/CharacterCard";
 
 const character : PathfinderCharacter = {
   name : "Tolskir Snowtreader",
-  level : 1,
+  level : 5,
   class : "Barbarian",
   ancestry : "Dwarf",
-  campaign : "Radiant Dawn"
+  campaign : "Radiant Dawn",
+  image : {image : "test_character.png", x_offset: 90, scale:200}
 }
 
 const Home = () => {

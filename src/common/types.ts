@@ -26,6 +26,6 @@ export type PathfinderCharacter = {
   image? : CharacterPortraitImage,
 }
 
-type Class = "Barbarian" | "Bard"
+export type Class = "Barbarian" | "Bard"
 
 type Ancestry = "Dwarf" | "Elf"
