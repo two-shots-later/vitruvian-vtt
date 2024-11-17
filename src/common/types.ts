@@ -1,3 +1,5 @@
+import { CharacterPortraitImage } from "../components/ChracterPortrait"
+
 export type UnitSize = "hug" | "full" | `${number}${SizeUnits}`
 type SizeUnits = "fr" | "px" | "em" | "rem" | "%" | "vw" | "vh"
 
@@ -12,3 +14,14 @@ export type StyledComponent = {
   className?: string,
   style?: React.CSSProperties,
 }
+
+
+/** THIS IS TEMPARARY UNTIL WE HAVE CHARACTER TYPE FROM BACKEND */
+export type PathfinderCharacter = {
+  name : string,
+  level : number,
+  class : Class,
+  image? : CharacterPortraitImage,
+}
+
+type Class = "Barbarian" | "Bard"

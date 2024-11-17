@@ -10,7 +10,7 @@ export type CharacterPortraitProps = {
   icon? : CharacterPortraitIcon,
 }
 
-type CharacterPortraitImage = string | {
+export type CharacterPortraitImage = string | {
   image : string,
   x_offset? : number,
   y_offset? : number,
