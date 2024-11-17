@@ -21,7 +21,11 @@ export type PathfinderCharacter = {
   name : string,
   level : number,
   class : Class,
+  campaign : string,
+  ancestry : Ancestry,
   image? : CharacterPortraitImage,
 }
 
 type Class = "Barbarian" | "Bard"
+
+type Ancestry = "Dwarf" | "Elf"

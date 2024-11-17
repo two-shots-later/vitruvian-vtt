@@ -1,11 +1,11 @@
 import { useLayoutEffect, useRef } from "react";
 import { clamp } from "../common/util";
-import { UnitSize } from "../common/types";
+import { StyledComponent, UnitSize } from "../common/types";
 
 const ITERATION_LIMIT = 10;
 const MAXIMUM_DIFFERENCE = 1;
 
-export type TextFitProps = {
+export type TextFitProps = StyledComponent & {
   children: string;
   minFontSize?: number;
   maxFontSize?: number;
@@ -13,7 +13,7 @@ export type TextFitProps = {
   padding?: {x : number, y : number}
 }
 
-export default function TextFit({children, minFontSize = 0, maxFontSize = Number.MAX_VALUE, width = "full", padding} : TextFitProps) {
+export default function TextFit({children, minFontSize = 0, maxFontSize = Number.MAX_VALUE, padding} : TextFitProps) {
   
   const textRef = useRef<HTMLDivElement>(null);
   

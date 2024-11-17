@@ -12,10 +12,10 @@ export default function CharacterCard({character} : CharacterCardProps) {
       <div className="-mb-[40px] w-full">
         <CharacterPortrait width="full"/>
       </div>
-      <div className="flex flex-col justify-center items-center border border-white rounded-lg bg-theme-background z-10">
-        <TextFit minFontSize={20} maxFontSize={72} padding={{x: 20, y : 0}}>{character.name}</TextFit>
-        <TextFit minFontSize={10} maxFontSize={20} padding={{x: 20, y : 0}}>{character.class}</TextFit>
-        <p>Character Description</p>
+      <div className="flex flex-col justify-center items-center border border-white rounded-lg bg-theme-background z-10 overflow-hidden">
+        <TextFit minFontSize={0} maxFontSize={72} padding={{x: 20, y : 0}}>{character.name}</TextFit>
+        <p className="text-[20px] text-nowrap truncate">{`${character.ancestry} ${character.class} ${character.level}`}</p>
+        <p className="text-[20px] text-nowrap truncate text-ellipsis">{character.campaign}</p>
       </div>
     </div>
   )
