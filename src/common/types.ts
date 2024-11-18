@@ -23,6 +23,7 @@ export type PathfinderCharacter = {
   class : Class,
   campaign : string,
   ancestry : Ancestry,
+  tags : string[],
   image? : CharacterPortraitImage,
 }
 

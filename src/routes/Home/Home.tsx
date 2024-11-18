@@ -7,6 +7,13 @@ const character : PathfinderCharacter = {
   class : "Barbarian",
   ancestry : "Dwarf",
   campaign : "Radiant Dawn",
+  tags : [
+    "Dwarf",
+    "Barbarian",
+    "Test",
+    "Level 5",
+    "Alkenstar Rebel"
+  ],
   image : {image : "test_character.png", x_offset: 90, scale:200}
 }
 
