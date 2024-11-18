@@ -8,7 +8,7 @@ export type CharacterPortraitProps = {
   width? : UnitSize,
   /** This is the icon that will be used in the portrait. By default, this will be the eye icon. The icons are shown when there is no image. */
   icon? : CharacterPortraitIcon,
-  /**Whether or not to render the starts in the top right and left */
+  /** Whether or not to render the starts in the top right and left */
   stars? : boolean
 }
 

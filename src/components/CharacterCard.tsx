@@ -5,6 +5,7 @@ import NumberBadge from "./NumberBadge"
 import TextFit from "./TextFit"
 
 export type CharacterCardProps = {
+  /** This is the Character object to be displayed. This Object is temparary for now, until we have character data from the backend. */
   character : PathfinderCharacter
 }
 
