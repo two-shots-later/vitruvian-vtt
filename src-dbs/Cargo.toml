@@ -6,4 +6,11 @@ edition = "2021"
 [build-dependencies]
 vitruvian-types = {path = "../src-types"}
 
+
 [dependencies]
+git2 = "0.19.0"
+serde = {version = "1.0.215", features = ["derive"]}
+serde_json = "1.0.133"
+spinoff = "0.8.0"
+strum = "0.26.3"
+strum_macros = "0.26.4"
