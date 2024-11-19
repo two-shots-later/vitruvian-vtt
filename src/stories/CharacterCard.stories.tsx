@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
-import Input from "../components/input/Input";
+import CharacterCard from "../components/CharacterCard";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: 'Input Field',
-  component: Input,
+  title: 'Character Card',
+  component: CharacterCard,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: 'centered',
@@ -14,14 +14,23 @@ const meta = {
   },
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
-} satisfies Meta<typeof Input>;
+} satisfies Meta<typeof CharacterCard>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** The input component is used for taking in text input from the user. It will have all 
-    of the same props as a normal input field., plus some extra.
+/** 
+A Card that is desgined to display character information in a visually appealing and compact way.
 */
 export const DefaultInput: Story = {
-  args: {width: "12rem", placeholder: "test", type: "email"},
+  args: {
+    character: {
+      name : "Tolskir Snowtreader",
+      level : 5,
+      class : "Barbarian",
+      ancestry : "Dwarf",
+      campaign : "Radiant Dawn",
+      image : {image : "test_character.png", x_offset: 90, scale:200}
+    }
+  },
 };

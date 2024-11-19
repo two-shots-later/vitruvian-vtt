@@ -8,9 +8,11 @@ export type CharacterPortraitProps = {
   width? : UnitSize,
   /** This is the icon that will be used in the portrait. By default, this will be the eye icon. The icons are shown when there is no image. */
   icon? : CharacterPortraitIcon,
+  /** Whether or not to render the starts in the top right and left */
+  stars? : boolean
 }
 
-type CharacterPortraitImage = string | {
+export type CharacterPortraitImage = string | {
   image : string,
   x_offset? : number,
   y_offset? : number,
@@ -20,7 +22,7 @@ type CharacterPortraitImage = string | {
 type CharacterPortraitIcon = "eye" | "moon"
 
 /** The Character portrait is a component to give visual style and character to a character card or character sheet.*/
-export default function CharacterPortrait({ image, width = "full", icon = "eye" }: CharacterPortraitProps) {
+export default function CharacterPortrait({ image, width = "full", icon = "eye", stars = true }: CharacterPortraitProps) {
   const parsedWidth = parseUnitSize(width)
   
   let inner = <CharacterPortraitSymbolEye className="absolute right-0 top-[2%] left-0 mx-auto w-[75%] h-full"/>
@@ -41,7 +43,7 @@ export default function CharacterPortrait({ image, width = "full", icon = "eye" 
   
   return (
     <div className="relative" style={{ width: parsedWidth }}>
-      <CharacterBorder style={{width : parsedWidth}}/>
+      <CharacterBorder stars={stars} style={{width : parsedWidth}}/>
       {inner}
     </div>
   )
@@ -65,11 +67,11 @@ function imageStyle(image : CharacterPortraitImage) : CSSProperties {
   }
 }
 
-function CharacterBorder({className, style} : StyledComponent) {
+function CharacterBorder({ className, style, stars = true }: StyledComponent & {stars? : boolean}) {
   return <svg viewBox="0 0 306 306" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} style={style}>
     <path d="M279.291 234.347C279.291 234.347 275.929 239.614 272.812 243.717C267.67 250.489 266.323 251.732 259.74 258.431C253.156 265.129 248.82 268.497 241.472 274.007C234.124 279.518 231.507 280.813 224.265 285.425C217.022 290.036 212.141 291.7 212.141 291.7M285.312 224.244L283.475 227.306M296.381 109.548L297.551 113.612M299.305 121.108C299.305 121.108 301.023 127.684 301.708 131.977C302.485 136.851 302.629 139.633 302.852 144.563C303.074 149.473 303.023 153.216 302.852 158.128C302.648 163.994 302.471 166.316 301.708 172.136C301.023 177.359 299.305 185.408 299.305 185.408M233.513 26.613C233.513 26.613 238.24 29.8101 245.652 35.4747C249.241 38.2182 253.077 41.5042 256.585 44.8232C260.32 48.357 266.784 55.5606 268.575 57.6023C272.049 61.5617 279.311 72.1131 279.311 72.1131M26.6037 72.6221C26.6037 72.6221 36.0498 57.74 47.8908 46.2304C59.7318 34.7208 72.1103 26.8984 72.1103 26.8984M109.28 9.92245L113.155 8.80462M121.127 6.80725C121.127 6.80725 134.212 4.25027 143.342 3.74311C152.471 3.23595 157.751 3.1929 164.512 3.74313C171.273 4.29335 184.916 6.80725 184.916 6.80725M223.312 20.601L226.784 22.6968M72.0306 279.596C72.0306 279.596 64.2643 274.463 59.5944 270.766C53.9055 266.262 50.8898 263.492 45.7902 258.33C41.2208 253.705 38.7171 251.023 34.7219 245.894C31.3442 241.557 26.7006 234.328 26.7006 234.328M6.57071 185.642C6.57071 185.642 5.26948 179.205 4.66268 175.044C3.841 169.41 3.50195 166.223 3.21183 160.536C2.90817 154.584 2.95142 151.229 3.21187 145.274C3.45019 139.826 3.53928 136.747 4.37945 131.358C5.01646 127.273 6.57071 121 6.57071 121M82.4037 285.564L79.0069 283.543M9.52178 196.859L8.44682 193.376M20.6153 82.4405L22.5933 79.3875M192.849 298.321L196.632 296.845M184.728 300.075C184.728 300.075 178.229 301.402 173.932 302.012C168.533 302.779 165.356 303.013 159.907 303.212C153.173 303.458 145.962 303.093 139.237 302.658C130.805 302.113 121.244 300.075 121.244 300.075M207.978 13.5262L209.212 14.1248M290.637 93.6098L291.308 94.6651M292.603 208.613L292.099 209.672M96.1737 291.973L98.0626 293.003M14.6981 211.613L15.6789 212.825M13.2992 98.3906L14.2215 96.2165M93.5774 15.5759L93.9605 15.3125" stroke="white" strokeWidth="5" strokeLinecap="round"/>
-    <path d="M22.819 47.7765L21.3567 60.6637L19.8825 47.7765L14.7826 46.7941L19.8825 45.5787L21.3567 33.7798L22.819 45.3545L28.3258 46.7941L22.819 47.7765Z" fill="white"/>
-    <path d="M286.077 47.7765L284.615 60.6636L283.14 47.7765L278.04 46.794L283.14 45.5787L284.615 33.7798L286.077 45.3545L291.584 46.794L286.077 47.7765Z" fill="white"/>
+    {stars && <path d="M22.819 47.7765L21.3567 60.6637L19.8825 47.7765L14.7826 46.7941L19.8825 45.5787L21.3567 33.7798L22.819 45.3545L28.3258 46.7941L22.819 47.7765Z" fill="white"/>}
+    {stars && <path d="M286.077 47.7765L284.615 60.6636L283.14 47.7765L278.04 46.794L283.14 45.5787L284.615 33.7798L286.077 45.3545L291.584 46.794L286.077 47.7765Z" fill="white"/>}
   </svg>
 }
 
