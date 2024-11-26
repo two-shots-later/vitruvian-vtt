@@ -22,10 +22,11 @@ const character : PathfinderCharacter = {
 const Home = () => {
   return (
     <div className="py-10">
+      <SearchBar />
       <div className="flex justify-center items-center">
-        <PopOver gap="0.25rem" renderChild={true} side="top">
-          <div className="p-2 border-4 w-24">Parent</div>
-          <div className="p-2 border animate-fade">Child</div>
+        <PopOver gap="0.25rem" renderChild={true} align="center">
+          <div className="p-2 border-4 w-24 bg-theme-background z-10">Parent</div>
+          <div className="p-2 border animate-fade bg-theme-background">Child</div>
         </PopOver>
       </div>
       <div className="flex flex-wrap gap-4 justify-center items-center w-full">

@@ -8,10 +8,11 @@ export type PopOverProps = {
   gap? : UnitSize;
   align? : PopoverAlign;
   fitWithin? : React.RefObject<HTMLElement>;
-  renderChild? : boolean
+  renderChild?: boolean;
+  container? : HTMLElement;
 }
 
-export default function PopOver({ children, side = "bottom", align = "center", gap = "0.25rem", renderChild = true } : PopOverProps) {
+export default function PopOver({ children, side = "bottom", align = "center", gap = "0.25rem", renderChild = true, container = document.body } : PopOverProps) {
   
   const parentRef = useRef<HTMLDivElement>(null)
   const childRef = useRef<HTMLDivElement>(null)
@@ -21,7 +22,10 @@ export default function PopOver({ children, side = "bottom", align = "center", g
   useLayoutEffect(() => {
     if (!parentRef.current || !childRef.current || !renderChild) return;
     
-    applyPos(parentRef.current, childRef.current, gapSize, side, align);
+    for(const s of sidePriorityArray(side)) {
+      applyPos(parentRef.current, childRef.current, gapSize, s, align);
+      if (isWithin(container, childRef.current)) break;
+    }
   })
   
   return <>
@@ -29,7 +33,7 @@ export default function PopOver({ children, side = "bottom", align = "center", g
       {children[0]}
     </div>
     {renderChild && createPortal((
-      <div ref={childRef} className="absolute top-0 left-0 bg-theme-background">
+      <div ref={childRef} className="absolute top-0 left-0 z-40">
         {children[1]}
       </div>
     ), document.body)}
@@ -66,8 +70,8 @@ function applyPos(
   
   let x = "", y = "";
   if(side === "top") {
-    x = `calc(${parentBB.left}px + ${alignValue})`
-    y = `calc(${parentBB.top - childBB.height}px - ${gap})`
+    x = `calc(${parentBB.x}px + ${alignValue})`
+    y = `calc(${parentBB.y - childBB.height}px - ${gap})`
   } else if(side === 'bottom') {
     x = `calc(${parentBB.left}px + ${alignValue})`
     y = `calc(${parentBB.bottom}px + ${gap})`
@@ -82,6 +86,27 @@ function applyPos(
   child.style.transform = `translate(${x}, ${y})`
 }
 
-function isWithin() {
+function isWithin(container : HTMLElement, element : HTMLElement) {
+  const containterBB = container.getBoundingClientRect();
+  const elementBB = element.getBoundingClientRect();
   
+  const p0 = { x: elementBB.x, y: elementBB.y }
+  const p1 = { x: elementBB.x + elementBB.width, y: elementBB.y + elementBB.height }
+  
+  const isPointWithin = (p: {x : number, y : number}) => 
+    p.x >= containterBB.x && 
+    p.x <= containterBB.x + containterBB.width && 
+    p.y >= containterBB.y && 
+    p.y <= containterBB.y + containterBB.height;
+  
+  return isPointWithin(p0) && isPointWithin(p1);
+}
+
+function sidePriorityArray(side : PopoverSide) : PopoverSide[] {
+  switch(side) {
+    case 'top': return ['top', 'bottom', 'left', 'right'];
+    case 'bottom': return ['bottom', 'top', 'left', 'right'];
+    case 'left': return ['left', 'right', 'top', 'bottom'];
+    case 'right': return ['right', 'left', 'top', 'bottom'];
+  }
 }
