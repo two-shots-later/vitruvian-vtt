@@ -6,24 +6,33 @@ export type PopOverProps = {
   children: [ReactNode, ReactNode];
   side? : PopoverSide;
   gap? : UnitSize;
+  shear?: UnitSize;
   align? : PopoverAlign;
   fitWithin? : React.RefObject<HTMLElement>;
   renderChild?: boolean;
   container? : HTMLElement;
 }
 
-export default function PopOver({ children, side = "bottom", align = "center", gap = "0.25rem", renderChild = true, container = document.body } : PopOverProps) {
+export default function PopOver({ 
+  children, side = "bottom", 
+  align = "center", 
+  gap = "0.25rem",
+  shear = "0px",
+  renderChild = true, 
+  container = document.body
+} : PopOverProps) {
   
   const parentRef = useRef<HTMLDivElement>(null)
   const childRef = useRef<HTMLDivElement>(null)
   
   const gapSize = parseUnitSize(gap);
+  const shearSize = parseUnitSize(shear);
   
   useLayoutEffect(() => {
     if (!parentRef.current || !childRef.current || !renderChild) return;
     
     for(const s of sidePriorityArray(side)) {
-      applyPos(parentRef.current, childRef.current, gapSize, s, align);
+      applyPos(parentRef.current, childRef.current, gapSize,shearSize, s, align);
       if (isWithin(container, childRef.current)) break;
     }
   })
@@ -46,7 +55,8 @@ type PopoverAlign = "start" | "center" | "end";
 function applyPos(
   parent : HTMLDivElement, 
   child : HTMLDivElement, 
-  gap : string, 
+  gap : string,
+  shear : string,
   side : PopoverSide,
   align : PopoverAlign
 ) {
@@ -70,17 +80,17 @@ function applyPos(
   
   let x = "", y = "";
   if(side === "top") {
-    x = `calc(${parentBB.x}px + ${alignValue})`
+    x = `calc(${parentBB.x}px + ${alignValue} + ${shear})`
     y = `calc(${parentBB.y - childBB.height}px - ${gap})`
   } else if(side === 'bottom') {
-    x = `calc(${parentBB.left}px + ${alignValue})`
+    x = `calc(${parentBB.left}px + ${alignValue}  + ${shear})`
     y = `calc(${parentBB.bottom}px + ${gap})`
   } else if(side === 'right') {
     x = `calc(${parentBB.right}px + ${gap})`
-    y = `calc(${parentBB.top}px + ${alignValue})`
+    y = `calc(${parentBB.top}px + ${alignValue} - ${shear})`
   } else {
     x = `calc(${parentBB.left}px - ${childBB.width}px - ${gap})`
-    y = `calc(${parentBB.top}px + ${alignValue})`
+    y = `calc(${parentBB.top}px + ${alignValue} - ${shear})`
   }
   
   child.style.transform = `translate(${x}, ${y})`
