@@ -11,6 +11,7 @@ export type PopOverProps = {
   fitWithin? : React.RefObject<HTMLElement>;
   renderChild?: boolean;
   container? : HTMLElement;
+  className? : string;
 }
 
 export default function PopOver({ 
@@ -19,7 +20,8 @@ export default function PopOver({
   gap = "0.25rem",
   shear = "0px",
   renderChild = true, 
-  container = document.body
+  container = document.body,
+  className
 } : PopOverProps) {
   
   const parentRef = useRef<HTMLDivElement>(null)
@@ -38,7 +40,7 @@ export default function PopOver({
   })
   
   return <>
-    <div ref={parentRef}>
+    <div ref={parentRef} className={className}>
       {children[0]}
     </div>
     {renderChild && createPortal((
