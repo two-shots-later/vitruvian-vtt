@@ -21,7 +21,7 @@ const character : PathfinderCharacter = {
 
 const Home = () => {
   return (
-    <div className="py-20">
+    <div className="py-10">
       <SearchBar />
       <div className="flex justify-center items-center pb-4">
         <PopOver gap="0.25rem" renderChild={true} side="bottom" align="center">
