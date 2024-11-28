@@ -1,10 +1,17 @@
+import { forwardRef } from "react";
+import { twMerge } from "tailwind-merge";
 
+export type SearchBarProps = {
+  className?: string;
+};
 
-
-export default function SearchBar() {
+const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(({className} : SearchBarProps, ref) => {
+  
+  const classes = twMerge("p-2 bg-theme-background border rounded-md outline-none", className);
+  
   return (
-    <div className="search-bar">
-      <input type="text" placeholder="Search..." />
-    </div>
+      <input type="text" className={classes} placeholder="Search..." ref={ref}/>
   );
-}
+});
+
+export default SearchBar;

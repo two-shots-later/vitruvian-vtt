@@ -1,6 +1,5 @@
 import { PathfinderCharacter } from "../../common/types";
 import CharacterCard from "../../components/CharacterCard";
-import PopOver from "../../components/PopOver";
 import SearchBar from "../../components/SearchBar";
 
 const character : PathfinderCharacter = {
@@ -21,25 +20,27 @@ const character : PathfinderCharacter = {
 
 const Home = () => {
   return (
-    <div className="py-10">
-      <SearchBar />
-      <div className="flex justify-center items-center pb-4">
+    <div>
+      {/* <div className="flex justify-center items-center pb-4">
         <PopOver gap="0.25rem" renderChild={true} side="bottom" align="center">
           <div className="p-2 border-4 w-24 bg-theme-background z-10">Parent</div>
           <div className="p-2 border animate-fade bg-theme-background">Child</div>
         </PopOver>
-      </div>
-      <div className="flex flex-wrap gap-4 justify-center items-center w-full">
-        <CharacterCard character={character} />
-        <CharacterCard character={character} />
-        <CharacterCard character={character} />
-        <CharacterCard character={character} />
-        <CharacterCard character={character} />
-        <CharacterCard character={character} />
-        <CharacterCard character={character} />
-        <CharacterCard character={character} />
-        <CharacterCard character={character} />
-        <CharacterCard character={character} />
+      </div> */}
+      <div className="flex flex-col gap-4 p-4 ">
+        <SearchBar/>
+        <div className="flex flex-wrap gap-4 justify-center items-center w-full">
+          <CharacterCard character={character} />
+          <CharacterCard character={character} />
+          <CharacterCard character={character} />
+          <CharacterCard character={character} />
+          <CharacterCard character={character} />
+          <CharacterCard character={character} />
+          <CharacterCard character={character} />
+          <CharacterCard character={character} />
+          <CharacterCard character={character} />
+          <CharacterCard character={character} />
+        </div>
       </div>
     </div>
   );
