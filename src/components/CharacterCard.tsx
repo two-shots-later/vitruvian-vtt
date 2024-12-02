@@ -17,7 +17,10 @@ export default function CharacterCard({character} : CharacterCardProps) {
         <CharacterPortrait width="full" stars={false} image={character.image}/>
       </div>
       <div className="flex flex-col justify-center items-center border border-white rounded-lg bg-theme-background z-10 overflow-hidden">
-        <TextFit minFontSize={0} maxFontSize={72} padding={{x: 20, y : 0}}>{character.name}</TextFit>
+        <div className="h-16 w-full flex items-center justify-center">
+          <TextFit minFontSize={10} maxFontSize={72} padding={{x: 20, y : 0}}>{character.name}</TextFit>
+        </div>
+        
         <p className="text-[20px] text-nowrap truncate">{`${character.ancestry} ${character.class} ${character.level}`}</p>
         <p className="text-[20px] text-nowrap truncate text-ellipsis">{character.campaign}</p>
         <div className="overflow-scroll w-full">

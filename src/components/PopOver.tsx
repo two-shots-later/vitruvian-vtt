@@ -1,5 +1,5 @@
 import { ReactNode, useLayoutEffect, useRef } from "react"
-import { parseUnitSize, UnitSize } from "../common/types";
+import { calcUnitSize, parseUnitSize, UnitSize } from "../common/types";
 import { createPortal } from "react-dom";
 
 export type PopOverProps = {
@@ -12,6 +12,7 @@ export type PopOverProps = {
   renderChild?: boolean;
   container? : HTMLElement;
   className? : string;
+  childWidth? : UnitSize;
 }
 
 export default function PopOver({ 
@@ -21,7 +22,8 @@ export default function PopOver({
   shear = "0px",
   renderChild = true, 
   container = document.body,
-  className
+  className,
+  childWidth = "hug"
 } : PopOverProps) {
   
   const parentRef = useRef<HTMLDivElement>(null)
@@ -37,6 +39,9 @@ export default function PopOver({
       applyPos(parentRef.current, childRef.current, gapSize,shearSize, s, align);
       if (isWithin(container, childRef.current)) break;
     }
+    
+    const width = calcUnitSize(childWidth, parentRef.current.getBoundingClientRect().width)
+    childRef.current.style.width = width;
   })
   
   return <>

@@ -1,22 +1,9 @@
 import { PathfinderCharacter } from "../../common/types";
 import CharacterCard from "../../components/CharacterCard";
 import SearchBar from "../../components/SearchBar";
+import pathfinderCharacters from "../../test_character_data.json";
 
-const character : PathfinderCharacter = {
-  name : "Tolskir Snowtreader",
-  level : 5,
-  class : "Barbarian",
-  ancestry : "Dwarf",
-  campaign : "Radiant Dawn",
-  tags : [
-    "Dwarf",
-    "Barbarian",
-    "Test",
-    "Level 5",
-    "Alkenstar Rebel"
-  ],
-  image : {image : "test_character.png", x_offset: 90, scale:200}
-}
+const characters : PathfinderCharacter[] = pathfinderCharacters as PathfinderCharacter[];
 
 const Home = () => {
   return (
@@ -28,18 +15,9 @@ const Home = () => {
         </PopOver>
       </div> */}
       <div className="flex flex-col gap-4 p-4 ">
-        <SearchBar/>
+        <SearchBar searchItems={characters}/>
         <div className="flex flex-wrap gap-4 justify-center items-center w-full">
-          <CharacterCard character={character} />
-          <CharacterCard character={character} />
-          <CharacterCard character={character} />
-          <CharacterCard character={character} />
-          <CharacterCard character={character} />
-          <CharacterCard character={character} />
-          <CharacterCard character={character} />
-          <CharacterCard character={character} />
-          <CharacterCard character={character} />
-          <CharacterCard character={character} />
+          {characters.map(c => <CharacterCard character={c} />)}
         </div>
       </div>
     </div>
