@@ -1,11 +1,14 @@
 import { PathfinderCharacter } from "../../common/types";
 import CharacterCard from "../../components/CharacterCard";
-import SearchBar from "../../components/SearchBar";
+import SearchBar, { useSearchBar } from "../../components/SearchBar";
 import pathfinderCharacters from "../../test_character_data.json";
 
 const characters : PathfinderCharacter[] = pathfinderCharacters as PathfinderCharacter[];
 
 const Home = () => {
+  
+  const { searchBar, searchResults } = useSearchBar(characters);
+  
   return (
     <div>
       {/* <div className="flex justify-center items-center pb-4">
@@ -15,9 +18,9 @@ const Home = () => {
         </PopOver>
       </div> */}
       <div className="flex flex-col gap-4 p-4 ">
-        <SearchBar searchItems={characters}/>
+        { searchBar }
         <div className="flex flex-wrap gap-4 justify-center items-center w-full">
-          {characters.map(c => <CharacterCard character={c} />)}
+          {searchResults.map(c => <CharacterCard character={c} />)}
         </div>
       </div>
     </div>

@@ -33,11 +33,12 @@ export default function PopOver({
   const shearSize = parseUnitSize(shear);
   
   useLayoutEffect(() => {
+    console.log(side)
     if (!parentRef.current || !childRef.current || !renderChild) return;
     
     for(const s of sidePriorityArray(side)) {
       applyPos(parentRef.current, childRef.current, gapSize,shearSize, s, align);
-      if (isWithin(container, childRef.current)) break;
+      if (elementIsVisibleInViewport(childRef.current)) break;
     }
     
     const width = calcUnitSize(childWidth, parentRef.current.getBoundingClientRect().width)
@@ -92,9 +93,11 @@ function applyPos(
   } else if(side === 'bottom') {
     x = `calc(${parentBB.left}px + ${alignValue}  + ${shear})`
     y = `calc(${parentBB.bottom}px + ${gap})`
+    console.log(x, y)
   } else if(side === 'right') {
     x = `calc(${parentBB.right}px + ${gap})`
     y = `calc(${parentBB.top}px + ${alignValue} - ${shear})`
+    console.log(x, y)
   } else {
     x = `calc(${parentBB.left}px - ${childBB.width}px - ${gap})`
     y = `calc(${parentBB.top}px + ${alignValue} - ${shear})`
@@ -118,6 +121,17 @@ function isWithin(container : HTMLElement, element : HTMLElement) {
   
   return isPointWithin(p0) && isPointWithin(p1);
 }
+
+function elementIsVisibleInViewport(el : HTMLElement, partiallyVisible = false) {
+  const { top, left, bottom, right } = el.getBoundingClientRect();
+  const { innerHeight, innerWidth } = window;
+  return partiallyVisible
+    ? ((top > 0 && top < innerHeight) ||
+        (bottom > 0 && bottom < innerHeight)) &&
+        ((left > 0 && left < innerWidth) || (right > 0 && right < innerWidth))
+    : top >= 0 && left >= 0 && bottom <= innerHeight && right <= innerWidth;
+};
+
 
 function sidePriorityArray(side : PopoverSide) : PopoverSide[] {
   switch(side) {

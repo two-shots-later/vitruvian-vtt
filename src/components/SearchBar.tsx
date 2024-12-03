@@ -1,7 +1,8 @@
-import { forwardRef, useState, useMemo, KeyboardEvent, KeyboardEventHandler} from "react";
+import { forwardRef, useState, useMemo, KeyboardEvent, KeyboardEventHandler, useEffect} from "react";
 import { twMerge } from "tailwind-merge";
 import Icon from "./Icon";
 import PopOver from "./PopOver";
+import Tag from "./Tag";
 
 export type SearchBarItem = {
   name : string;
@@ -12,13 +13,31 @@ export type SearchBarProps = {
   className?: string;
   searchItems: SearchBarItem[];
   limit? : number;
+  onSearchResultsChange? : (results : SearchBarItem[]) => void;
 };
 
-const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(({className, searchItems, limit = 10} : SearchBarProps, ref) => {
+const applySearch = <T extends SearchBarItem>(items : T[], search : string, tags : string[]) => {
+  const tagFilteredItems = items.filter(item => {
+    for (const tag of tags) {
+      if (item.tags?.includes(tag)) return true;
+    }
+  })
+  
+  return tagFilteredItems;
+}
+
+const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(({
+  className, 
+  searchItems, 
+  limit = 10, 
+  onSearchResultsChange = () => {},
+} : SearchBarProps, ref) => {
   
   const classes = twMerge("bg-theme-background rounded-md h-8", className);
   
   const [searchText, setSearchText] = useState<string>("");
+  const [focusedTag, setFocusedTag] = useState<number>(0);
+  const [tagScroll, setTagScroll] = useState<number>(0);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   
   const possibleTags : string[] = useMemo(() => {
@@ -49,17 +68,55 @@ const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(({className, sear
     return filteredTags;
   }, [currentTag, possibleTags])
   
-  const reducedTags = useMemo(() => filteredTags.map(tag => `#${tag}`).splice(0, limit), [filteredTags])
+  const maxLength = useMemo(() => {
+    setTagScroll(0);
+    setFocusedTag(0);
+    console.log(filteredTags);
+    return Math.min(filteredTags.length, limit);
+  }, [currentTag, filteredTags.length])
+  
+  const reducedTags = useMemo(() => filteredTags.map(tag => `#${tag}`).splice(tagScroll,limit), [filteredTags, tagScroll])
   
   const onKeyPress : KeyboardEventHandler = (event : KeyboardEvent) => {
-    console.log(event.code)
-    if(event.code === 'Enter') {
-      
+    // console.log(event.code)
+    if(event.code === 'Enter' && areHintsOpen) {
+      setSearchText("");
+      setTagScroll(0);
+      setFocusedTag(0);
+      const newTag = filteredTags[focusedTag + tagScroll];
+      if(newTag) { 
+        setSelectedTags([...selectedTags, newTag]);
+      }
+    }
+    
+    if(event.code === "Backspace" && searchText === "") {
+      setSelectedTags(selectedTags.slice(0, selectedTags.length - 1));
+    }
+    
+    if (event.code === "ArrowUp" && areHintsOpen) {
+      if(focusedTag > 0) setFocusedTag(focusedTag - 1)
+      if(focusedTag === 0 && tagScroll !== 0) setTagScroll(tagScroll - 1)
+      event.preventDefault()
+    }
+    
+    if (event.code === "ArrowDown" && areHintsOpen) {
+      if(focusedTag < (maxLength - 1)) setFocusedTag(focusedTag + 1)
+      if(focusedTag === (maxLength - 1) && tagScroll + focusedTag < filteredTags.length - 1) setTagScroll(tagScroll + 1)
+      event.preventDefault()
     }
   }
   
-  const onBlur = () => {
-  }
+  useEffect(() => {
+    if (areHintsOpen) return;
+    if (selectedTags.length === 0) {
+      onSearchResultsChange(searchItems);
+      return;
+    }
+    const filteredSearchItems = applySearch(searchItems, searchText, selectedTags);
+    if(searchItems !== filteredSearchItems) {
+      onSearchResultsChange(filteredSearchItems)
+    }
+  }, [selectedTags, searchText])
   
   return (
     <div className={classes + " flex justify-stretch items-center border overflow-hidden p2"}>
@@ -68,21 +125,24 @@ const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(({className, sear
           <Icon variant="search" className="fill-theme-background" size={16}/>
         </button>
       </div>
-      <PopOver align="start" className="w-full h-full" childWidth="hug" renderChild={areHintsOpen}> 
+      <div className="flex gap-1 px-1"> 
+        {selectedTags.map(tag => {
+          return <Tag>{tag}</Tag>
+        })}
+      </div>
+      <PopOver align="start" className="w-full h-full" side="bottom" childWidth="hug" renderChild={areHintsOpen}> 
         <input 
           type="text" 
-          className="bg-theme-background round px-2 outline-none w-full h-full" 
+          className="bg-theme-background round px-1 outline-none w-full h-full" 
           placeholder="Search..." 
           ref={ref}
           value={searchText}
           onChange={e => setSearchText(e.target.value)}
-          onKeyPress={onKeyPress}
+          onKeyDown={onKeyPress}
         />
         <div className="bg-theme-background border rounded-md overflow-hidden">
-          { reducedTags.map(item => 
-            <div className="bg-theme-background hover:bg-theme-background-secondary p-1">
-              <button>{ item }</button>
-            </div>
+          { reducedTags.map((item, index) => 
+            <div className={`bg-theme-background ${index === focusedTag ? "bg-theme-background-secondary" : "hover:bg-theme-background-secondary"} p-1`}> <button>{ item }</button> </div>
           )}
         </div>
       </PopOver>
@@ -90,4 +150,11 @@ const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(({className, sear
   );
 });
 
+export const useSearchBar = <T extends SearchBarItem>(items : T[]) => {
+  const [searchResults, setSearchResults] = useState<T[]>(items);
+  const searchBar = <SearchBar searchItems={items} onSearchResultsChange={i => setSearchResults(i as T[])} />
+  return {searchResults, searchBar}
+}
+
 export default SearchBar;
+
