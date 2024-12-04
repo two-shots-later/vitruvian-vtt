@@ -9,6 +9,28 @@ export function parseUnitSize(unitSize: UnitSize): string {
     return unitSize
 }
 
+export function calcUnitSize(unitSize : UnitSize, dimention : number) : string {
+  if(unitSize === "full") return `${dimention}px`
+  if(unitSize === "hug") return "auto"
+  
+  const [value, unit] = separateUnit(unitSize)
+  
+  console.log(unit);
+  
+  switch (unit) {
+    case "%":
+      return `${(value / 100) * dimention}px`
+      break;
+  }
+  return unitSize
+}
+
+function separateUnit(unitSize: UnitSize) : [number, string] {
+  const value = unitSize.replace(/[a-z%]+/, '')
+  const unit = unitSize.replace(/[0-9.]+/, '')
+  return [Number.parseFloat(value), unit]
+}
+
 /** This is a type that should be used on any component that accepts styling. Doen't apply for all components. */
 export type StyledComponent = {
   className?: string,
@@ -23,6 +45,7 @@ export type PathfinderCharacter = {
   class : Class,
   campaign : string,
   ancestry : Ancestry,
+  
   tags : string[],
   image? : CharacterPortraitImage,
 }
