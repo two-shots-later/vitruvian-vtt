@@ -16,11 +16,22 @@ export type SearchBarProps = {
   onSearchResultsChange? : (results : SearchBarItem[]) => void;
 };
 
-const applySearch = <T extends SearchBarItem>(items : T[], search : string, tags : string[]) => {
-  const tagFilteredItems = items.filter(item => {
-    for (const tag of tags) {
-      if (item.tags?.includes(tag)) return true;
+const applySearch = <T extends SearchBarItem>(items : T[], search : string, tags? : string[]) => {
+  const searchFilteredItems = items.filter(item => item.name.toLowerCase().includes(search.toLowerCase()));
+
+  if(!tags || tags.length === 0) return searchFilteredItems;
+  
+  const tagFilteredItems = searchFilteredItems.filter(item => {
+    let shouldBeIncluded = true;
+    if(!item.tags) { 
+      if (tags.length !== 0) shouldBeIncluded = false;
+    } else {
+      for (const tag of tags) {
+        shouldBeIncluded = shouldBeIncluded && item.tags.includes(tag);
+        // if (item.tags?.includes(tag)) return true;
+      }
     }
+    return shouldBeIncluded;
   })
   
   return tagFilteredItems;
@@ -108,10 +119,6 @@ const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(({
   
   useEffect(() => {
     if (areHintsOpen) return;
-    if (selectedTags.length === 0) {
-      onSearchResultsChange(searchItems);
-      return;
-    }
     const filteredSearchItems = applySearch(searchItems, searchText, selectedTags);
     if(searchItems !== filteredSearchItems) {
       onSearchResultsChange(filteredSearchItems)

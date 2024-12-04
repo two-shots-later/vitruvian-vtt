@@ -1,6 +1,6 @@
 import { PathfinderCharacter } from "../../common/types";
 import CharacterCard from "../../components/CharacterCard";
-import SearchBar, { useSearchBar } from "../../components/SearchBar";
+import { useSearchBar } from "../../components/SearchBar";
 import pathfinderCharacters from "../../test_character_data.json";
 
 const characters : PathfinderCharacter[] = pathfinderCharacters as PathfinderCharacter[];
@@ -20,7 +20,7 @@ const Home = () => {
       <div className="flex flex-col gap-4 p-4 ">
         { searchBar }
         <div className="flex flex-wrap gap-4 justify-center items-center w-full">
-          {searchResults.map(c => <CharacterCard character={c} />)}
+          {searchResults.map(c => <CharacterCard key={c.name + c.campaign} character={c} />)}
         </div>
       </div>
     </div>
