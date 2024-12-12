@@ -20,8 +20,7 @@ export default function PopOver({
   align = "center", 
   gap = "0.25rem",
   shear = "0px",
-  renderChild = true, 
-  container = document.body,
+  renderChild = true,
   className,
   childWidth = "hug"
 } : PopOverProps) {
@@ -104,22 +103,6 @@ function applyPos(
   }
   
   child.style.transform = `translate(${x}, ${y})`
-}
-
-function isWithin(container : HTMLElement, element : HTMLElement) {
-  const containterBB = container.getBoundingClientRect();
-  const elementBB = element.getBoundingClientRect();
-  
-  const p0 = { x: elementBB.x, y: elementBB.y }
-  const p1 = { x: elementBB.x + elementBB.width, y: elementBB.y + elementBB.height }
-  
-  const isPointWithin = (p: {x : number, y : number}) => 
-    p.x >= containterBB.x && 
-    p.x <= containterBB.x + containterBB.width && 
-    p.y >= containterBB.y && 
-    p.y <= containterBB.y + containterBB.height;
-  
-  return isPointWithin(p0) && isPointWithin(p1);
 }
 
 function elementIsVisibleInViewport(el : HTMLElement, partiallyVisible = false) {

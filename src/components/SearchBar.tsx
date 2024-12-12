@@ -157,9 +157,9 @@ const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(({
   );
 });
 
-export const useSearchBar = <T extends SearchBarItem>(items : T[]) => {
+export const useSearchBar = <T extends SearchBarItem>(items : T[], searchBarProps? : Omit<SearchBarProps, 'searchItems'>) => {
   const [searchResults, setSearchResults] = useState<T[]>(items);
-  const searchBar = <SearchBar searchItems={items} onSearchResultsChange={i => setSearchResults(i as T[])} />
+  const searchBar = <SearchBar {...searchBarProps} searchItems={items} onSearchResultsChange={i => setSearchResults(i as T[])} />
   return {searchResults, searchBar}
 }
 
