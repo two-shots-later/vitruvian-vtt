@@ -12,7 +12,8 @@ export default {
       animation: {
 				fade: 'fadeIn .15s ease-in-out',
 			},
-      
+			maxWidth: {
+			},
 			keyframes: {
 				fadeIn: {
 					from: { opacity: 0 },

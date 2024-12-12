@@ -11,7 +11,7 @@ pub fn get_current_theme() -> VitruvianTheme {
         background: "#292929".to_string(),
         background_alt: "#5A5A5A".to_string(),
         font_color_primary: "#ffffff".to_string(),
-        font_color_secondary: "#909090".to_string(),
+        font_color_secondary: "#707070".to_string(),
         font_primary: "CrimsonPro".to_string(),
         error: "#ff0000".to_string(),
     }
