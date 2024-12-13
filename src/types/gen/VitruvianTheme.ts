@@ -3,4 +3,4 @@
 /**
  * This defines a theme in the program.
  */
-export type VitruvianTheme = { primary: string, secondary: string, accent: string, background: string, background_alt: string, font_color_primary: string, font_color_secondary: string, font_primary: string, error: string, };
+export type VitruvianTheme = { primary: string, secondary: string, accent: string, background: string, background_alt: string, font_color_primary: string, font_color_secondary: string, font_primary: string, error: string, button_background: string, };

@@ -9,12 +9,13 @@
     "preview": "vite preview",
     "tauri": "tauri",
     "storybook": "tauri dev --config src-tauri/storybook.conf.json",
-    "fmt" : "cargo fmt --manifest-path src-tauri/Cargo.toml & cargo fmt --manifest-path src-types/Cargo.toml & cargo fmt --manifest-path src-dbs/Cargo.toml",
+    "fmt": "cargo fmt --manifest-path src-tauri/Cargo.toml & cargo fmt --manifest-path src-types/Cargo.toml & cargo fmt --manifest-path src-dbs/Cargo.toml",
     "build-storybook": "storybook build"
   },
   "dependencies": {
     "@tauri-apps/api": ">=2.0.0-rc.0",
     "@tauri-apps/plugin-shell": ">=2.0.0-rc.0",
+    "class-variance-authority": "^0.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.26.1",

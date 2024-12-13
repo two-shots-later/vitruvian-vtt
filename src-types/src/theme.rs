@@ -13,4 +13,5 @@ pub struct VitruvianTheme {
     pub font_color_secondary: String,
     pub font_primary: String,
     pub error: String,
+    pub button_background: String,
 }
