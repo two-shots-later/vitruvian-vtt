@@ -12,7 +12,6 @@ export default {
       animation: {
 				fade: 'fadeIn .15s ease-in-out',
 			},
-      
 			keyframes: {
 				fadeIn: {
 					from: { opacity: 0 },
@@ -22,6 +21,9 @@ export default {
 				  from: { opacity: 1 },
 					to: { opacity: 0 },
 				}
+			},
+			backgroundImage: {
+			 'graph-paper': "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGkAAABpBAMAAADLrBAJAAAAElBMVEW9vb2SkpK9vb29vb2+vr69vb3CFyyWAAAABnRSTlM+B2AzHE0R53HmAAAAdklEQVR4AWNgECQDMjAZK4GgiRKEdobQqsYQOgirrAKDMEFlmLIG5Okiz4U4dY36a9RfIqEuJEOHkRZfo/4a9Rd5OWXExdeov0b9xepCelYJGGnxNeqvUX+Rl1PI89dofI36a7SfMhpfo/4a7aeM9lNG/TXqLwCwpddSj5lJkwAAAABJRU5ErkJggg==)"
 			},
       colors: {
         red : {
@@ -57,6 +59,7 @@ export default {
         'theme-background-secondary' : 'var(--background-alt-color)',
         'theme-font-primary' : 'var(--font-color-primary)',
         'theme-font-secondary' : 'var(--font-color-secondary)',
+        'theme-button-background' : 'var(--button-background)',
         'theme-error' : 'var(--error-color)',
       },
     },

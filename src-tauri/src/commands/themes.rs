@@ -11,8 +11,11 @@ pub fn get_current_theme() -> VitruvianTheme {
         background: "#292929".to_string(),
         background_alt: "#5A5A5A".to_string(),
         font_color_primary: "#ffffff".to_string(),
-        font_color_secondary: "#909090".to_string(),
+        font_color_secondary: "#707070".to_string(),
         font_primary: "CrimsonPro".to_string(),
+        button_background:
+            "radial-gradient(circle, var(--secondary-color) 25%, var(--primary-color) 100%)"
+                .to_string(),
         error: "#ff0000".to_string(),
     }
 }
@@ -31,6 +34,8 @@ pub fn get_theme(theme_id: String) -> VitruvianTheme {
             font_color_primary: "#ffffff".to_string(),
             font_color_secondary: "#909090".to_string(),
             font_primary: "CrimsonPro".to_string(),
+            button_background:
+                "radial-gradient(circle, rgba(255,42,113,1) 25%, rgba(214,1,79,1) 100%)".to_string(),
             error: "#ff0000".to_string(),
         }
     } else if &theme_id == "red" {
@@ -43,6 +48,8 @@ pub fn get_theme(theme_id: String) -> VitruvianTheme {
             font_color_primary: "#ffffff".to_string(),
             font_color_secondary: "#909090".to_string(),
             font_primary: "CrimsonPro".to_string(),
+            button_background:
+                "radial-gradient(circle, rgba(255,42,113,1) 25%, rgba(214,1,79,1) 100%)".to_string(),
             error: "#ff0000".to_string(),
         }
     } else {

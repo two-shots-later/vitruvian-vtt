@@ -7,7 +7,7 @@ const characters : PathfinderCharacter[] = pathfinderCharacters as PathfinderCha
 
 const Home = () => {
   
-  const { searchBar, searchResults } = useSearchBar(characters);
+  const { searchBar, searchResults } = useSearchBar(characters, {});
   
   return (
     <div>

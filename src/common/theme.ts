@@ -13,6 +13,7 @@ export function applyTheme(theme: VitruvianTheme) {
   document.documentElement.style.setProperty("--font-color-primary", theme.font_color_primary);
   document.documentElement.style.setProperty("--font-color-secondary", theme.font_color_secondary);
   document.documentElement.style.setProperty("--error-color", theme.error);
+  document.documentElement.style.setProperty("--button-background", theme.button_background);
   document.documentElement.style.setProperty("background-color", theme.background);
   document.documentElement.style.setProperty("color", theme.font_color_primary);
   document.documentElement.style.setProperty("font-family", theme.font_primary);
