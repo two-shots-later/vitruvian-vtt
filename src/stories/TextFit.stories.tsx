@@ -28,7 +28,7 @@ export const DefaultInput: Story = {
     children: "This text will size to fit in the box"
   },
   render: (args) => (
-    <div className="flex flex-col justify-center items-center border border-white rounded-lg bg-theme-background overflow-hidden w-[80vw] h-32">
+    <div className="flex flex-col justify-center items-center border border-white rounded-lg bg-theme-background overflow-hidden w-96 h-32">
       <TextFit minFontSize={0} maxFontSize={72} padding={{ x: 20, y: 0 }}>{ args.children }</TextFit>
     </div>
   )
